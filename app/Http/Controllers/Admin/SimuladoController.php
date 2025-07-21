@@ -61,12 +61,14 @@ class SimuladoController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'time_limit' => 'required|integer|min:1',
+            'categoria' => 'required|string|max:255',
+            'nivel' => 'required|in:basic,intermediate,advanced',
+            'duracao' => 'required|integer|min:1',
             'passing_score' => 'required|integer|min:0|max:100',
-            'max_attempts' => 'required|integer|min:1',
-            'is_active' => 'boolean',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'pontos_recompensa' => 'required|integer|min:0',
+            'status' => 'required|in:draft,active,inactive',
+            'disponivel_em' => 'nullable|date',
+            'expiracao_em' => 'nullable|date|after_or_equal:disponivel_em',
         ]);
         
         if ($validator->fails()) {
@@ -77,15 +79,17 @@ class SimuladoController extends Controller
         
         // Criar o simulado
         $simulado = Simulado::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'time_limit' => $request->time_limit,
+            'titulo' => $request->title,
+            'descricao' => $request->description,
+            'categoria' => $request->categoria,
+            'nivel' => $request->nivel,
+            'duracao' => $request->duracao,
+            'questoes_count' => 0, // Será atualizado quando questões forem adicionadas
             'passing_score' => $request->passing_score,
-            'max_attempts' => $request->max_attempts,
-            'is_active' => $request->has('is_active'),
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'created_by' => auth()->id(),
+            'pontos_recompensa' => $request->pontos_recompensa,
+            'status' => $request->status ?? 'active',
+            'disponivel_em' => $request->disponivel_em,
+            'expiracao_em' => $request->expiracao_em,
         ]);
         
         return redirect()->route('admin.simulados.show', $simulado)
