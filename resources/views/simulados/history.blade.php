@@ -1,4 +1,4 @@
-<x-layouts.app title="Histórico de Simulados - HCP Onboarding">
+<x-layouts.employee title="Histórico de Simulados - HCP Onboarding">
     <div class="py-6 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-hcp-secondary-50 to-hcp-secondary-100 dark:from-hcp-secondary-900 dark:to-hcp-secondary-800 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
@@ -232,4 +232,4 @@
             @endif
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.employee>

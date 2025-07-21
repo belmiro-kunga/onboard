@@ -113,6 +113,20 @@ class Simulado extends Model
     }
 
     /**
+     * Scope para filtrar simulados disponíveis (ativos, dentro do período de disponibilidade e não expirados).
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 'active')
+            ->where(function($q) {
+                $q->whereNull('disponivel_em')->orWhere('disponivel_em', '<=', now());
+            })
+            ->where(function($q) {
+                $q->whereNull('expiracao_em')->orWhere('expiracao_em', '>=', now());
+            });
+    }
+
+    /**
      * Obter a pontuação total do simulado.
      */
     public function getTotalPoints(): int
