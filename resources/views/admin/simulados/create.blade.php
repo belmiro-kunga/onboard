@@ -40,16 +40,49 @@
                         @enderror
                     </div>
 
-                    <!-- Configurações do Simulado -->
+                    <!-- Categoria e Nível -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Tempo Limite -->
+                        <!-- Categoria -->
                         <div>
-                            <label for="time_limit" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
-                                Tempo Limite (minutos) <span class="text-red-600">*</span>
+                            <label for="categoria" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Categoria <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" name="time_limit" id="time_limit" value="{{ old('time_limit', 60) }}" min="1" required
+                            <input type="text" name="categoria" id="categoria" value="{{ old('categoria') }}" required
+                                placeholder="Ex: Técnico, Segurança, Compliance"
                                 class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
-                            @error('time_limit')
+                            @error('categoria')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Nível -->
+                        <div>
+                            <label for="nivel" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Nível <span class="text-red-600">*</span>
+                            </label>
+                            <select name="nivel" id="nivel" required
+                                class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
+                                <option value="">Selecione o nível</option>
+                                <option value="basic" {{ old('nivel') == 'basic' ? 'selected' : '' }}>Básico</option>
+                                <option value="intermediate" {{ old('nivel') == 'intermediate' ? 'selected' : '' }}>Intermediário</option>
+                                <option value="advanced" {{ old('nivel') == 'advanced' ? 'selected' : '' }}>Avançado</option>
+                            </select>
+                            @error('nivel')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Configurações do Simulado -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Duração -->
+                        <div>
+                            <label for="duracao" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Duração (minutos) <span class="text-red-600">*</span>
+                            </label>
+                            <input type="number" name="duracao" id="duracao" value="{{ old('duracao', 60) }}" min="1" required
+                                class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
+                            @error('duracao')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -66,50 +99,58 @@
                             @enderror
                         </div>
 
-                        <!-- Máximo de Tentativas -->
+                        <!-- Pontos de Recompensa -->
                         <div>
-                            <label for="max_attempts" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
-                                Máximo de Tentativas <span class="text-red-600">*</span>
+                            <label for="pontos_recompensa" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Pontos de Recompensa <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" name="max_attempts" id="max_attempts" value="{{ old('max_attempts', 3) }}" min="1" required
+                            <input type="number" name="pontos_recompensa" id="pontos_recompensa" value="{{ old('pontos_recompensa', 100) }}" min="0" required
                                 class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
-                            @error('max_attempts')
+                            @error('pontos_recompensa')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+                    </div>
 
-                        <!-- Status -->
-                        <div class="flex items-center">
-                            <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active') ? 'checked' : '' }}
-                                class="h-4 w-4 text-hcp-primary-600 focus:ring-hcp-primary-500 border-hcp-secondary-300 dark:border-hcp-secondary-700 rounded">
-                            <label for="is_active" class="ml-2 block text-sm text-hcp-secondary-700 dark:text-hcp-secondary-300">
-                                Ativar Simulado
-                            </label>
-                        </div>
+                    <!-- Status -->
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                            Status <span class="text-red-600">*</span>
+                        </label>
+                        <select name="status" id="status" required
+                            class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
+                            <option value="">Selecione o status</option>
+                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Rascunho</option>
+                            <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>Ativo</option>
+                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inativo</option>
+                        </select>
+                        @error('status')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Período de Disponibilidade -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Data de Início -->
+                        <!-- Data de Disponibilidade -->
                         <div>
-                            <label for="start_date" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
-                                Data de Início (opcional)
+                            <label for="disponivel_em" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Disponível em (opcional)
                             </label>
-                            <input type="datetime-local" name="start_date" id="start_date" value="{{ old('start_date') }}"
+                            <input type="datetime-local" name="disponivel_em" id="disponivel_em" value="{{ old('disponivel_em') }}"
                                 class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
-                            @error('start_date')
+                            @error('disponivel_em')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Data de Término -->
+                        <!-- Data de Expiração -->
                         <div>
-                            <label for="end_date" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
-                                Data de Término (opcional)
+                            <label for="expiracao_em" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300">
+                                Expira em (opcional)
                             </label>
-                            <input type="datetime-local" name="end_date" id="end_date" value="{{ old('end_date') }}"
+                            <input type="datetime-local" name="expiracao_em" id="expiracao_em" value="{{ old('expiracao_em') }}"
                                 class="mt-1 block w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
-                            @error('end_date')
+                            @error('expiracao_em')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

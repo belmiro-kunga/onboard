@@ -19,15 +19,18 @@ class Simulado extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'description',
-        'time_limit',
+        'titulo',
+        'descricao',
+        'categoria',
+        'nivel',
+        'duracao',
+        'questoes_count',
         'passing_score',
-        'max_attempts',
-        'is_active',
-        'start_date',
-        'end_date',
-        'created_by',
+        'pontos_recompensa',
+        'status',
+        'configuracoes',
+        'disponivel_em',
+        'expiracao_em',
     ];
 
     /**
@@ -36,12 +39,13 @@ class Simulado extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_active' => 'boolean',
-        'time_limit' => 'integer',
+        'duracao' => 'integer',
+        'questoes_count' => 'integer',
         'passing_score' => 'integer',
-        'max_attempts' => 'integer',
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'pontos_recompensa' => 'integer',
+        'configuracoes' => 'array',
+        'disponivel_em' => 'datetime',
+        'expiracao_em' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -85,16 +89,16 @@ class Simulado extends Model
     public function isAvailableFor(User $user): bool
     {
         // Verificar se o simulado está ativo
-        if (!$this->is_active) {
+        if ($this->status !== 'active') {
             return false;
         }
 
         // Verificar se o simulado está dentro do período de disponibilidade
-        if ($this->start_date && now()->lt($this->start_date)) {
+        if ($this->disponivel_em && now()->lt($this->disponivel_em)) {
             return false;
         }
 
-        if ($this->end_date && now()->gt($this->end_date)) {
+        if ($this->expiracao_em && now()->gt($this->expiracao_em)) {
             return false;
         }
 
@@ -103,12 +107,9 @@ class Simulado extends Model
             return false;
         }
 
-        // Verificar se o usuário ainda tem tentativas disponíveis
-        $tentativasRealizadas = $this->tentativas()
-            ->where('user_id', $user->id)
-            ->count();
-
-        return $tentativasRealizadas < $this->max_attempts;
+        // Para simulados, não há limite de tentativas por padrão
+        // Este método pode ser expandido conforme necessário
+        return true;
     }
 
     /**
@@ -228,14 +229,12 @@ class Simulado extends Model
     }
 
     /**
-     * Obter o número de tentativas restantes para um usuário.
+     * Obter o número de tentativas realizadas por um usuário.
      */
-    public function getRemainingAttemptsFor(User $user): int
+    public function getAttemptsCountFor(User $user): int
     {
-        $tentativasRealizadas = $this->tentativas()
+        return $this->tentativas()
             ->where('user_id', $user->id)
             ->count();
-
-        return max(0, $this->max_attempts - $tentativasRealizadas);
     }
 }

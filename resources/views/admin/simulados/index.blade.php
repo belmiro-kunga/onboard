@@ -31,6 +31,7 @@
                         <select name="status" id="status" class="w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
                             <option value="">Todos</option>
                             <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Ativos</option>
+                            <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Rascunhos</option>
                             <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inativos</option>
                         </select>
                     </div>
@@ -38,7 +39,7 @@
                         <label for="order_by" class="block text-sm font-medium text-hcp-secondary-700 dark:text-hcp-secondary-300 mb-1">Ordenar por</label>
                         <select name="order_by" id="order_by" class="w-full rounded-md border-hcp-secondary-300 dark:border-hcp-secondary-700 dark:bg-hcp-secondary-900 dark:text-white shadow-sm focus:border-hcp-primary-500 focus:ring focus:ring-hcp-primary-500 focus:ring-opacity-50">
                             <option value="created_at" {{ request('order_by') === 'created_at' ? 'selected' : '' }}>Data de Criação</option>
-                            <option value="title" {{ request('order_by') === 'title' ? 'selected' : '' }}>Título</option>
+                            <option value="titulo" {{ request('order_by') === 'titulo' ? 'selected' : '' }}>Título</option>
                             <option value="passing_score" {{ request('order_by') === 'passing_score' ? 'selected' : '' }}>Nota de Aprovação</option>
                         </select>
                     </div>
@@ -78,13 +79,20 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="text-sm font-medium text-hcp-secondary-900 dark:text-white">
-                                                {{ $simulado->title }}
+                                                {{ $simulado->titulo }}
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $simulado->is_active ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' }}">
-                                            {{ $simulado->is_active ? 'Ativo' : 'Inativo' }}
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            @if($simulado->status === 'active') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                            @elseif($simulado->status === 'draft') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                            @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+                                            @endif">
+                                            @if($simulado->status === 'active') Ativo
+                                            @elseif($simulado->status === 'draft') Rascunho
+                                            @else Inativo
+                                            @endif
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-hcp-secondary-500 dark:text-hcp-secondary-400">
@@ -124,9 +132,9 @@
                                             </a>
                                             <form action="{{ route('admin.simulados.toggle-active', $simulado) }}" method="POST" class="inline">
                                                 @csrf
-                                                <button type="submit" class="{{ $simulado->is_active ? 'text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300' : 'text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300' }}" title="{{ $simulado->is_active ? 'Desativar' : 'Ativar' }}">
+                                                <button type="submit" class="{{ $simulado->status === 'active' ? 'text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300' : 'text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300' }}" title="{{ $simulado->status === 'active' ? 'Desativar' : 'Ativar' }}">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        @if($simulado->is_active)
+                                                        @if($simulado->status === 'active')
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         @else
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
