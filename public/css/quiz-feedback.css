@@ -1,0 +1,90 @@
+/* Estilos para o sistema de feedback imediato em quizzes */
+
+/* Opções de resposta */
+.quiz-answer-option {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.quiz-answer-option:hover {
+    border-color: #6366f1;
+}
+
+.quiz-answer-option.selected {
+    border-color: #6366f1;
+    background-color: #eef2ff;
+}
+
+/* Feedback visual */
+.quiz-answer-option.correct-answer {
+    border-color: #10b981;
+    background-color: #ecfdf5;
+}
+
+.quiz-answer-option.incorrect-answer {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Card de feedback */
+.feedback-card {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Loader */
+.answer-loader {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botão de próxima questão */
+.next-question-btn {
+    transition: all 0.2s ease;
+}
+
+.next-question-btn:hover {
+    transform: translateX(2px);
+}
+
+/* Barra de progresso */
+.quiz-progress-container {
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.quiz-progress-bar {
+    height: 100%;
+    background-color: #6366f1;
+    transition: width 0.5s ease;
+}
+
+/* Toast de erro */
+.error-toast {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 640px) {
+    .quiz-answer-option {
+        padding: 0.75rem;
+    }
+    
+    .feedback-card {
+        padding: 0.75rem;
+    }
+}

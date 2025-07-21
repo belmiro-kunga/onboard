@@ -1,0 +1,145 @@
+# Docker Compose - Sistema de Onboarding Interativo HCP
+version: '3.8'
+
+services:
+  # Aplicação Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: hcp-onboarding-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - hcp-network
+    depends_on:
+      - database
+      - redis
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+
+  # Servidor Web Nginx
+  webserver:
+    image: nginx:alpine
+    container_name: hcp-onboarding-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+      - "8443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - hcp-network
+    depends_on:
+      - app
+
+  # Banco de Dados MySQL
+  database:
+    image: mysql:8.0
+    container_name: hcp-onboarding-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: hcp_onboarding
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: hcp_user
+      MYSQL_PASSWORD: hcp_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - hcp-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Redis para Cache e Sessões
+  redis:
+    image: redis:7-alpine
+    container_name: hcp-onboarding-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - hcp-network
+    command: redis-server --appendonly yes --requirepass redis_password
+
+  # MailHog para testes de email (desenvolvimento)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: hcp-onboarding-mail
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - hcp-network
+
+  # Node.js para desenvolvimento frontend
+  node:
+    image: node:18-alpine
+    container_name: hcp-onboarding-node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - hcp-network
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+
+  # Elasticsearch para busca avançada (opcional)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: hcp-onboarding-search
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - hcp-network
+
+  # MinIO para armazenamento de arquivos (S3 compatible)
+  minio:
+    image: minio/minio
+    container_name: hcp-onboarding-storage
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio_user
+      MINIO_ROOT_PASSWORD: minio_password
+    volumes:
+      - minio_data:/data
+    networks:
+      - hcp-network
+    command: server /data --console-address ":9001"
+
+# Volumes persistentes
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  minio_data:
+    driver: local
+
+# Rede personalizada
+networks:
+  hcp-network:
+    driver: bridge

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">./tests/Feature/Integration</directory>
+        </testsuite>
+        <testsuite name="E2E">
+            <directory suffix="Test.php">./tests/Feature/E2E</directory>
+        </testsuite>
+        <testsuite name="Performance">
+            <directory suffix="Test.php">./tests/Performance</directory>
+        </testsuite>
+        <testsuite name="Contract">
+            <directory suffix="Test.php">./tests/Contract</directory>
+        </testsuite>
+        <testsuite name="Chaos">
+            <directory suffix="Test.php">./tests/Chaos</directory>
+        </testsuite>
+        <testsuite name="Visual">
+            <directory suffix="Test.php">./tests/Visual</directory>
+        </testsuite>
+        <testsuite name="API">
+            <directory suffix="Test.php">./tests/Feature/Api</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+    </php>
+    <coverage>
+        <report>
+            <html outputDirectory="coverage"/>
+            <clover outputFile="coverage.xml"/>
+            <text outputFile="coverage.txt"/>
+        </report>
+    </coverage>
+</phpunit>
