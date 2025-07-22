@@ -8,7 +8,7 @@ use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CourseController extends Controller
+class CourseController extends BaseController
 {
     /**
      * Display a listing of available courses.

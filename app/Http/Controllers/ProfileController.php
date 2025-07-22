@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     /**
      * Exibe o perfil do usuário autenticado.

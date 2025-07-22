@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
 
 class CalendarEvent extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;, HasCommonScopes
 
     /**
      * The attributes that are mass assignable.
@@ -109,18 +111,14 @@ class CalendarEvent extends Model
     /**
      * Scope por tipo
      */
-    public function scopeByType(\Illuminate\Database\Eloquent\Builder $query, string $type): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('type', $type);
-    }
+    // Scope ByType disponível via trait HasCommonScopes
+
 
     /**
      * Scope por status
      */
-    public function scopeByStatus(\Illuminate\Database\Eloquent\Builder $query, string $status): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('status', $status);
-    }
+    // Scope ByStatus disponível via trait HasCommonScopes
+
 
     /**
      * Scope entre datas

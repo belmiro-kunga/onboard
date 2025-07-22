@@ -1,0 +1,503 @@
+{
+    "methods": {
+        "index": [
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php"
+                ],
+                "similarity": 90.76,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                    "app\/Http\/Controllers\\Admin\\QuizController.php"
+                ],
+                "similarity": 91.89,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php"
+                ],
+                "similarity": 89.02,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 89.03,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CourseController.php",
+                    "app\/Http\/Controllers\\CourseController.php"
+                ],
+                "similarity": 70.18,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CourseController.php",
+                    "app\/Http\/Controllers\\OccupationalQualifierController.php"
+                ],
+                "similarity": 70.18,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                    "app\/Http\/Controllers\\Admin\\QuizController.php"
+                ],
+                "similarity": 94.85,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php"
+                ],
+                "similarity": 92.24,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 91.07,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\QuizController.php",
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php"
+                ],
+                "similarity": 91.72,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\QuizController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 90.95,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 88.36,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\UserDashboardController.php",
+                    "app\/Http\/Controllers\\ProfileController.php"
+                ],
+                "similarity": 70.74,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\AnalyticsController.php",
+                    "app\/Http\/Controllers\\WelcomeController.php"
+                ],
+                "similarity": 89.66,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\DashboardController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\ModuleController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\NotificationController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\ProgressController.php"
+                ],
+                "similarity": 74.6,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "similarity": 92.98,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\CourseController.php",
+                    "app\/Http\/Controllers\\OccupationalQualifierController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\DashboardController.php",
+                    "app\/Http\/Controllers\\ModuleController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\DashboardController.php",
+                    "app\/Http\/Controllers\\NotificationController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\DashboardController.php",
+                    "app\/Http\/Controllers\\ProgressController.php"
+                ],
+                "similarity": 74.6,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\DashboardController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "similarity": 92.98,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\NotificationController.php"
+                ],
+                "similarity": 100,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\ProgressController.php"
+                ],
+                "similarity": 74.6,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "similarity": 92.98,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\NotificationController.php",
+                    "app\/Http\/Controllers\\ProgressController.php"
+                ],
+                "similarity": 74.6,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\NotificationController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "similarity": 92.98,
+                "method": "index"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\ProgressController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "similarity": 82.09,
+                "method": "index"
+            }
+        ],
+        "destroy": [
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                    "app\/Http\/Controllers\\Admin\\CourseController.php"
+                ],
+                "similarity": 71.43,
+                "method": "destroy"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CourseController.php",
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php"
+                ],
+                "similarity": 79.55,
+                "method": "destroy"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php"
+                ],
+                "similarity": 79.07,
+                "method": "destroy"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\QuizController.php",
+                    "app\/Http\/Controllers\\Admin\\QuizQuestionController.php"
+                ],
+                "similarity": 80.4,
+                "method": "destroy"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\QuizController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 88.89,
+                "method": "destroy"
+            },
+            {
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\QuizQuestionController.php",
+                    "app\/Http\/Controllers\\Admin\\UserController.php"
+                ],
+                "similarity": 73.77,
+                "method": "destroy"
+            }
+        ]
+    },
+    "scopes": {
+        "Active": [
+            "app\/Models\\Achievement.php",
+            "app\/Models\\Course.php",
+            "app\/Models\\Module.php",
+            "app\/Models\\ModuleContent.php",
+            "app\/Models\\Quiz.php",
+            "app\/Models\\QuizAnswer.php",
+            "app\/Models\\QuizQuestion.php",
+            "app\/Models\\Traits\\HasActiveStatus.php",
+            "app\/Models\\User.php"
+        ],
+        "Valid": [
+            "app\/Models\\Certificate.php",
+            "app\/Models\\Traits\\HasCommonScopes.php"
+        ],
+        "Ordered": [
+            "app\/Models\\Course.php",
+            "app\/Models\\Module.php",
+            "app\/Models\\ModuleContent.php",
+            "app\/Models\\Notification.php",
+            "app\/Models\\QuizAnswer.php",
+            "app\/Models\\Traits\\Orderable.php"
+        ],
+        "Recent": [
+            "app\/Models\\ModuleRating.php",
+            "app\/Models\\Traits\\FormattedTimestamps.php"
+        ]
+    },
+    "relationships": {
+        "belongsToMany": {
+            "app\/Models\\Course.php": 2,
+            "app\/Models\\Module.php": 3,
+            "app\/Models\\User.php": 4
+        },
+        "belongsTo": {
+            "app\/Models\\CalendarEvent.php": 2,
+            "app\/Models\\Certificate.php": 4,
+            "app\/Models\\CourseEnrollment.php": 2,
+            "app\/Models\\ModuleRating.php": 2,
+            "app\/Models\\Quiz.php": 2,
+            "app\/Models\\QuizAnswer.php": 2,
+            "app\/Models\\QuizAttempt.php": 2,
+            "app\/Models\\QuizAttemptAnswer.php": 2,
+            "app\/Models\\SimuladoResposta.php": 2,
+            "app\/Models\\SimuladoTentativa.php": 2,
+            "app\/Models\\UserProgress.php": 2
+        },
+        "hasMany": {
+            "app\/Models\\Course.php": 2,
+            "app\/Models\\Module.php": 3,
+            "app\/Models\\Quiz.php": 2,
+            "app\/Models\\QuizQuestion.php": 2,
+            "app\/Models\\Simulado.php": 2,
+            "app\/Models\\User.php": 6
+        }
+    },
+    "validations": [
+        {
+            "pattern": "'title' => 'required|string|max:255', 'description' => 'required|string', 'short_description' => 'nu...",
+            "files": [
+                "app\/Http\/Controllers\\Admin\\CourseController.php",
+                "app\/Http\/Controllers\\Admin\\CourseController.php"
+            ],
+            "count": 2
+        }
+    ],
+    "queries": [
+        {
+            "pattern": "User::where('is_active', true)->count();...",
+            "files": [
+                "app\/Http\/Controllers\\Admin\\UserDashboardController.php",
+                "app\/Services\\AuthService.php"
+            ],
+            "count": 2
+        },
+        {
+            "pattern": "Module::where('is_active', true) ->orderBy('order_index') ->get();...",
+            "files": [
+                "app\/Http\/Controllers\\DashboardController.php",
+                "app\/Http\/Controllers\\ModuleController.php"
+            ],
+            "count": 2
+        },
+        {
+            "pattern": "QuizAttempt::where('user_id', $user->id) ->where('created_at', '>=', $startDate) ->get();...",
+            "files": [
+                "app\/Http\/Controllers\\ProgressController.php",
+                "app\/Http\/Controllers\\ProgressController.php"
+            ],
+            "count": 2
+        },
+        {
+            "pattern": "SimuladoTentativa::where('id', (int) $tentativaId) ->where('user_id', $user->id) ->where('simulado_i...",
+            "files": [
+                "app\/Http\/Controllers\\SimuladoController.php",
+                "app\/Http\/Controllers\\SimuladoController.php",
+                "app\/Http\/Controllers\\SimuladoController.php"
+            ],
+            "count": 3
+        },
+        {
+            "pattern": "SimuladoTentativa::where('id', (int) $tentativaId) ->where('user_id', $user->id) ->where('simulado_i...",
+            "files": [
+                "app\/Http\/Controllers\\SimuladoController.php",
+                "app\/Http\/Controllers\\SimuladoController.php"
+            ],
+            "count": 2
+        }
+    ],
+    "responses": {
+        "redirect_route": [
+            {
+                "pattern": "return redirect()->route('login');...",
+                "files": [
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\CertificateController.php",
+                    "app\/Http\/Controllers\\DashboardController.php",
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\NotificationController.php",
+                    "app\/Http\/Controllers\\NotificationController.php",
+                    "app\/Http\/Controllers\\QuizController.php",
+                    "app\/Http\/Controllers\\QuizController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "count": 10
+            },
+            {
+                "pattern": "return redirect()->route('courses.index') ->with('error', 'Este curso n\u00e3o est\u00e1 dispon\u00edvel no mome...",
+                "files": [
+                    "app\/Http\/Controllers\\CourseController.php",
+                    "app\/Http\/Controllers\\CourseController.php"
+                ],
+                "count": 2
+            },
+            {
+                "pattern": "return redirect()->route('courses.show', $course) ->with('error', 'Voc\u00ea precisa se inscrever neste ...",
+                "files": [
+                    "app\/Http\/Controllers\\CourseController.php",
+                    "app\/Http\/Controllers\\CourseController.php"
+                ],
+                "count": 2
+            },
+            {
+                "pattern": "return redirect()->route('modules.show', $moduleId);...",
+                "files": [
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\ModuleController.php",
+                    "app\/Http\/Controllers\\ModuleController.php"
+                ],
+                "count": 3
+            },
+            {
+                "pattern": "return redirect()->route('quizzes.index');...",
+                "files": [
+                    "app\/Http\/Controllers\\QuizController.php",
+                    "app\/Http\/Controllers\\QuizController.php",
+                    "app\/Http\/Controllers\\QuizController.php"
+                ],
+                "count": 3
+            }
+        ],
+        "json_response": [
+            {
+                "pattern": "return response()->json(['success' => true]);...",
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\CourseController.php",
+                    "app\/Http\/Controllers\\Admin\\CourseController.php"
+                ],
+                "count": 2
+            },
+            {
+                "pattern": "return response()->json(['error' => $validator->errors()], 422);...",
+                "files": [
+                    "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                    "app\/Http\/Controllers\\Admin\\SimuladoController.php"
+                ],
+                "count": 2
+            },
+            {
+                "pattern": "return response()->json([ 'success' => false, 'message' => 'Acesso n\u00e3o autorizado a esta tentativa'...",
+                "files": [
+                    "app\/Http\/Controllers\\QuizAnswerController.php",
+                    "app\/Http\/Controllers\\QuizAnswerController.php",
+                    "app\/Http\/Controllers\\QuizAnswerController.php"
+                ],
+                "count": 3
+            },
+            {
+                "pattern": "return response()->json([ 'success' => false, 'message' => 'Esta quest\u00e3o n\u00e3o pertence ao quiz atua...",
+                "files": [
+                    "app\/Http\/Controllers\\QuizAnswerController.php",
+                    "app\/Http\/Controllers\\QuizAnswerController.php"
+                ],
+                "count": 2
+            },
+            {
+                "pattern": "return response()->json([ 'success' => false, 'message' => 'Esta tentativa j\u00e1 foi conclu\u00edda' ], 40...",
+                "files": [
+                    "app\/Http\/Controllers\\QuizAnswerController.php",
+                    "app\/Http\/Controllers\\QuizAnswerController.php"
+                ],
+                "count": 2
+            }
+        ]
+    }
+}

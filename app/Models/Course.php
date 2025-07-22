@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\Orderable;
+use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\Cacheable;
 
 class Course extends Model
 {
-    use HasFactory;
+    use HasFactory, HasActiveStatus, Orderable, FormattedTimestamps;, Cacheable
 
     protected $fillable = [
         'title',
@@ -73,20 +77,14 @@ class Course extends Model
     /**
      * Scopes
      */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
 
-    public function scopeByType($query, $type)
-    {
-        return $query->where('type', $type);
-    }
 
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('order_index')->orderBy('title');
-    }
+    // Scope ByType disponível via trait HasCommonScopes
+
+
+    // Scope Ordered disponível via trait
+
 
     /**
      * Accessors

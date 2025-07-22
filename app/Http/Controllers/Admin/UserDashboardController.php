@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+
+use App\Repositories\UserRepository;use App\Services\AuthService;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Carbon\Carbon;
 
-class UserDashboardController extends Controller
+class UserDashboardController extends BaseAdminController
 {
     /**
      * Exibir dashboard de gestão de usuários
@@ -27,7 +29,7 @@ class UserDashboardController extends Controller
     {
         $totalUsers = User::count();
         $activeUsers = User::where('is_active', true)->count();
-        $adminUsers = User::where('role', 'admin')->count();
+        $adminUsers = $this->authService->countAdmins();
         $managerUsers = User::where('role', 'manager')->count();
         $employeeUsers = User::where('role', 'employee')->count();
         $newUsers = User::where('created_at', '>=', Carbon::now()->subDays(30))->count();
@@ -232,7 +234,7 @@ class UserDashboardController extends Controller
         }
         
         // Muitos administradores
-        $adminCount = User::where('role', 'admin')->count();
+        $adminCount = $this->authService->countAdmins();
         $totalUsers = User::count();
         $adminPercentage = $totalUsers > 0 ? ($adminCount / $totalUsers) * 100 : 0;
         

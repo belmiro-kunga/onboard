@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
+
+use App\Repositories\ProgressRepository;use App\Models\User;
 use App\Models\Module;
 use App\Models\CalendarEvent;
 use App\Models\UserProgress;
@@ -491,9 +492,7 @@ class CalendarService
      */
     private function isModuleCompleted(User $user, Module $module): bool
     {
-        $progress = UserProgress::where('user_id', $user->id)
-            ->where('module_id', $module->id)
-            ->first();
+        $progress = $this->progressRepository->getUserModuleProgress(user->id, module->id);
         
         return $progress && $progress->status === 'completed';
     }

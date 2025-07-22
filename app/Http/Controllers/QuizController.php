@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quiz;
+
+use App\Repositories\QuizRepository;use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
 use App\Models\User;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     /**
      * Exibe a lista de quizzes disponíveis.

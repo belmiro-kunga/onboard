@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\Certificate;
 use App\Models\Module;
 use App\Models\User;
@@ -12,19 +12,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-class CertificateController extends Controller
+class CertificateController extends BaseAdminController
 {
     /**
      * Exibe a lista de certificados.
      */
-    public function index(Request $request): View
+        public function index(Request $request)
     {
-        $query = Certificate::with(['user', 'module']);
+        $items = $this->baseIndex(Certificate::class, $request, ['title', 'description']);
+        $stats = $this->generateStats(Certificate::class);
         
-        // Filtros
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
+        return $this->adminView('certificates.index', compact('items', 'stats'));
+    }
         
         if ($request->has('module_id')) {
             $query->where('module_id', $request->module_id);

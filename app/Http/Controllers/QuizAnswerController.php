@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quiz;
+
+
+use App\Http\Responses\ApiResponse;use App\Repositories\QuizRepository;use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
 use App\Models\QuizAttemptAnswer;
@@ -23,11 +25,7 @@ class QuizAnswerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Dados inválidos',
-                'errors' => $validator->errors()
-            ], 422);
+            return ApiResponse::error('Dados inválidos', null, 422);
         }
 
         $user = Auth::user();
@@ -37,38 +35,28 @@ class QuizAnswerController extends Controller
 
         // Verificar se a tentativa pertence ao usuário
         if ($attempt->user_id !== $user->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Acesso não autorizado a esta tentativa'
-            ], 403);
+            return ApiResponse::error('Acesso não autorizado a esta tentativa'
+            , null, 403);
         }
 
         // Verificar se a questão pertence ao quiz
         if ($question->quiz_id !== $quiz->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta questão não pertence ao quiz atual'
-            ], 400);
+            return ApiResponse::error('Esta questão não pertence ao quiz atual'
+            , null, 400);
         }
 
         // Verificar se a tentativa está em andamento
         if ($attempt->completed_at) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta tentativa já foi concluída'
-            ], 400);
+            return ApiResponse::error('Esta tentativa já foi concluída'
+            , null, 400);
         }
 
         // Verificar se a resposta já foi dada
-        $existingAnswer = QuizAttemptAnswer::where('attempt_id', $attempt->id)
-            ->where('question_id', $question->id)
-            ->first();
+        $existingAnswer = $this->quizRepository->getAttemptAnswer(attempt->id, question->id);
 
         if ($existingAnswer) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta questão já foi respondida'
-            ], 400);
+            return ApiResponse::error('Esta questão já foi respondida'
+            , null, 400);
         }
 
         // Verificar se a resposta está correta
@@ -126,30 +114,22 @@ class QuizAnswerController extends Controller
 
         // Verificar se a tentativa pertence ao usuário
         if ($attempt->user_id !== $user->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Acesso não autorizado a esta tentativa'
-            ], 403);
+            return ApiResponse::error('Acesso não autorizado a esta tentativa'
+            , null, 403);
         }
 
         // Verificar se a questão pertence ao quiz
         if ($question->quiz_id !== $quiz->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta questão não pertence ao quiz atual'
-            ], 400);
+            return ApiResponse::error('Esta questão não pertence ao quiz atual'
+            , null, 400);
         }
 
         // Buscar a resposta do usuário
-        $answer = QuizAttemptAnswer::where('attempt_id', $attempt->id)
-            ->where('question_id', $question->id)
-            ->first();
+        $answer = $this->quizRepository->getAttemptAnswer(attempt->id, question->id);
 
         if (!$answer) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta questão ainda não foi respondida'
-            ], 404);
+            return ApiResponse::error('Esta questão ainda não foi respondida'
+            , null, 404);
         }
 
         // Marcar que o feedback foi mostrado
@@ -181,18 +161,14 @@ class QuizAnswerController extends Controller
 
         // Verificar se a tentativa pertence ao usuário
         if ($attempt->user_id !== $user->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Acesso não autorizado a esta tentativa'
-            ], 403);
+            return ApiResponse::error('Acesso não autorizado a esta tentativa'
+            , null, 403);
         }
 
         // Verificar se a tentativa está em andamento
         if ($attempt->completed_at) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Esta tentativa já foi concluída'
-            ], 400);
+            return ApiResponse::error('Esta tentativa já foi concluída'
+            , null, 400);
         }
 
         // Obter todas as questões do quiz

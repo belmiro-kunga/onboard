@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class OccupationalQualifierController extends Controller
+class OccupationalQualifierController extends BaseController
 {
     /**
      * Exibir página do qualificador ocupacional

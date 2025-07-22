@@ -1,0 +1,309 @@
+{
+    "controllers": {
+        "total": 31,
+        "admin_controllers": 0,
+        "api_controllers": 0,
+        "web_controllers": 31,
+        "large_controllers": [
+            {
+                "file": "app\/Http\/Controllers\\Admin\\CertificateController.php",
+                "lines": 305,
+                "methods": 11
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\CourseController.php",
+                "lines": 445,
+                "methods": 17
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\DashboardController.php",
+                "lines": 281,
+                "methods": 7
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\ModuleController.php",
+                "lines": 388,
+                "methods": 12
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\SimuladoController.php",
+                "lines": 469,
+                "methods": 19
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\UserController.php",
+                "lines": 229,
+                "methods": 9
+            },
+            {
+                "file": "app\/Http\/Controllers\\Admin\\UserDashboardController.php",
+                "lines": 251,
+                "methods": 8
+            },
+            {
+                "file": "app\/Http\/Controllers\\Auth\\AuthController.php",
+                "lines": 201,
+                "methods": 9
+            },
+            {
+                "file": "app\/Http\/Controllers\\CertificateController.php",
+                "lines": 309,
+                "methods": 12
+            },
+            {
+                "file": "app\/Http\/Controllers\\CompanyMapController.php",
+                "lines": 278,
+                "methods": 4
+            },
+            {
+                "file": "app\/Http\/Controllers\\CourseController.php",
+                "lines": 241,
+                "methods": 6
+            },
+            {
+                "file": "app\/Http\/Controllers\\DashboardController.php",
+                "lines": 242,
+                "methods": 5
+            },
+            {
+                "file": "app\/Http\/Controllers\\GamificationController.php",
+                "lines": 297,
+                "methods": 11
+            },
+            {
+                "file": "app\/Http\/Controllers\\ModuleController.php",
+                "lines": 249,
+                "methods": 8
+            },
+            {
+                "file": "app\/Http\/Controllers\\NotificationController.php",
+                "lines": 203,
+                "methods": 9
+            },
+            {
+                "file": "app\/Http\/Controllers\\OccupationalQualifierController.php",
+                "lines": 242,
+                "methods": 6
+            },
+            {
+                "file": "app\/Http\/Controllers\\ProgressController.php",
+                "lines": 295,
+                "methods": 7
+            },
+            {
+                "file": "app\/Http\/Controllers\\QuizAnswerController.php",
+                "lines": 236,
+                "methods": 3
+            },
+            {
+                "file": "app\/Http\/Controllers\\QuizController.php",
+                "lines": 201,
+                "methods": 6
+            },
+            {
+                "file": "app\/Http\/Controllers\\SimuladoController.php",
+                "lines": 497,
+                "methods": 11
+            },
+            {
+                "file": "app\/Http\/Controllers\\TimelineController.php",
+                "lines": 388,
+                "methods": 6
+            }
+        ],
+        "methods_per_controller": {
+            "app\/Http\/Controllers\\Admin\\CertificateController.php": 11,
+            "app\/Http\/Controllers\\Admin\\CourseController.php": 17,
+            "app\/Http\/Controllers\\Admin\\DashboardController.php": 7,
+            "app\/Http\/Controllers\\Admin\\ModuleController.php": 12,
+            "app\/Http\/Controllers\\Admin\\QuizController.php": 7,
+            "app\/Http\/Controllers\\Admin\\QuizQuestionController.php": 7,
+            "app\/Http\/Controllers\\Admin\\ReportController.php": 1,
+            "app\/Http\/Controllers\\Admin\\SimuladoController.php": 19,
+            "app\/Http\/Controllers\\Admin\\UserController.php": 9,
+            "app\/Http\/Controllers\\Admin\\UserDashboardController.php": 8,
+            "app\/Http\/Controllers\\AnalyticsController.php": 1,
+            "app\/Http\/Controllers\\Api\\QuizController.php": 2,
+            "app\/Http\/Controllers\\Auth\\AdminAuthController.php": 4,
+            "app\/Http\/Controllers\\Auth\\AuthController.php": 9,
+            "app\/Http\/Controllers\\CertificateController.php": 12,
+            "app\/Http\/Controllers\\CompanyMapController.php": 4,
+            "app\/Http\/Controllers\\Controller.php": 0,
+            "app\/Http\/Controllers\\CourseController.php": 6,
+            "app\/Http\/Controllers\\DashboardController.php": 5,
+            "app\/Http\/Controllers\\GamificationController.php": 11,
+            "app\/Http\/Controllers\\ModuleController.php": 8,
+            "app\/Http\/Controllers\\NotificationController.php": 9,
+            "app\/Http\/Controllers\\OccupationalQualifierController.php": 6,
+            "app\/Http\/Controllers\\ProfileController.php": 5,
+            "app\/Http\/Controllers\\ProgressController.php": 7,
+            "app\/Http\/Controllers\\QuizAnswerController.php": 3,
+            "app\/Http\/Controllers\\QuizController.php": 6,
+            "app\/Http\/Controllers\\SimuladoController.php": 11,
+            "app\/Http\/Controllers\\TimelineController.php": 6,
+            "app\/Http\/Controllers\\VideoTrackingController.php": 4,
+            "app\/Http\/Controllers\\WelcomeController.php": 1
+        }
+    },
+    "models": {
+        "total": 22,
+        "relationships": {
+            "app\/Models\\Achievement.php": 2,
+            "app\/Models\\CalendarEvent.php": 2,
+            "app\/Models\\Certificate.php": 4,
+            "app\/Models\\Course.php": 6,
+            "app\/Models\\CourseEnrollment.php": 2,
+            "app\/Models\\Module.php": 10,
+            "app\/Models\\ModuleContent.php": 1,
+            "app\/Models\\ModuleRating.php": 2,
+            "app\/Models\\Notification.php": 1,
+            "app\/Models\\PointsHistory.php": 2,
+            "app\/Models\\Quiz.php": 4,
+            "app\/Models\\QuizAnswer.php": 2,
+            "app\/Models\\QuizAttempt.php": 4,
+            "app\/Models\\QuizAttemptAnswer.php": 2,
+            "app\/Models\\QuizQuestion.php": 3,
+            "app\/Models\\Simulado.php": 5,
+            "app\/Models\\SimuladoQuestao.php": 2,
+            "app\/Models\\SimuladoResposta.php": 2,
+            "app\/Models\\SimuladoTentativa.php": 3,
+            "app\/Models\\User.php": 15,
+            "app\/Models\\UserGamification.php": 1,
+            "app\/Models\\UserProgress.php": 2
+        },
+        "large_models": [
+            {
+                "file": "app\/Models\\Achievement.php",
+                "lines": 320,
+                "relationships": 2
+            },
+            {
+                "file": "app\/Models\\CalendarEvent.php",
+                "lines": 373,
+                "relationships": 2
+            },
+            {
+                "file": "app\/Models\\Course.php",
+                "lines": 194,
+                "relationships": 6
+            },
+            {
+                "file": "app\/Models\\Module.php",
+                "lines": 330,
+                "relationships": 10
+            },
+            {
+                "file": "app\/Models\\ModuleContent.php",
+                "lines": 356,
+                "relationships": 1
+            },
+            {
+                "file": "app\/Models\\ModuleRating.php",
+                "lines": 165,
+                "relationships": 2
+            },
+            {
+                "file": "app\/Models\\Notification.php",
+                "lines": 220,
+                "relationships": 1
+            },
+            {
+                "file": "app\/Models\\Quiz.php",
+                "lines": 161,
+                "relationships": 4
+            },
+            {
+                "file": "app\/Models\\QuizAttempt.php",
+                "lines": 280,
+                "relationships": 4
+            },
+            {
+                "file": "app\/Models\\QuizQuestion.php",
+                "lines": 256,
+                "relationships": 3
+            },
+            {
+                "file": "app\/Models\\Simulado.php",
+                "lines": 254,
+                "relationships": 5
+            },
+            {
+                "file": "app\/Models\\SimuladoTentativa.php",
+                "lines": 173,
+                "relationships": 3
+            },
+            {
+                "file": "app\/Models\\User.php",
+                "lines": 393,
+                "relationships": 15
+            },
+            {
+                "file": "app\/Models\\UserGamification.php",
+                "lines": 360,
+                "relationships": 1
+            },
+            {
+                "file": "app\/Models\\UserProgress.php",
+                "lines": 259,
+                "relationships": 2
+            }
+        ]
+    },
+    "services": {
+        "total": 10,
+        "service_details": {
+            "app\/Services\\ActivityTrackingService.php": {
+                "lines": 264,
+                "methods": 11
+            },
+            "app\/Services\\CalendarService.php": {
+                "lines": 651,
+                "methods": 26
+            },
+            "app\/Services\\CertificateService.php": {
+                "lines": 722,
+                "methods": 23
+            },
+            "app\/Services\\EventDispatcherAdapter.php": {
+                "lines": 35,
+                "methods": 2
+            },
+            "app\/Services\\GamificationService.php": {
+                "lines": 204,
+                "methods": 11
+            },
+            "app\/Services\\LevelService.php": {
+                "lines": 173,
+                "methods": 10
+            },
+            "app\/Services\\NotificationService.php": {
+                "lines": 592,
+                "methods": 25
+            },
+            "app\/Services\\PDFGenerationService.php": {
+                "lines": 164,
+                "methods": 12
+            },
+            "app\/Services\\PointsService.php": {
+                "lines": 139,
+                "methods": 7
+            },
+            "app\/Services\\StreakService.php": {
+                "lines": 172,
+                "methods": 8
+            }
+        }
+    },
+    "duplication": {
+        "common_patterns": {
+            "validation_patterns": "Valida\u00e7\u00f5es similares em m\u00faltiplos controllers",
+            "response_patterns": "Padr\u00f5es de response similares",
+            "query_patterns": "Queries similares em diferentes lugares"
+        },
+        "similar_methods": {
+            "index_methods": "M\u00e9todos index similares em controllers",
+            "store_methods": "M\u00e9todos store com valida\u00e7\u00f5es similares",
+            "show_methods": "M\u00e9todos show com l\u00f3gica similar"
+        }
+    }
+}

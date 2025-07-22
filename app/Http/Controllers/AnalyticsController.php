@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Http\Controllers\SimpleViewController;
 
-class AnalyticsController extends Controller
+class AnalyticsController extends SimpleViewController
 {
-    /**
-     * Exibe a página de analytics do usuário.
-     */
-    public function index(): View
+    public function __construct()
     {
-        // Lógica para buscar dados de analytics...
-        return view('analytics.index');
+        parent::__construct('analytics.index');
     }
 }

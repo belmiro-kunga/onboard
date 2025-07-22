@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\FormattedTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -228,18 +230,14 @@ class Achievement extends Model
     /**
      * Scope para achievements ativos
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Scope por categoria
      */
-    public function scopeByCategory(\Illuminate\Database\Eloquent\Builder $query, string $category): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('category', $category);
-    }
+    // Scope ByCategory disponível via trait HasCommonScopes
+
 
     /**
      * Scope por raridade

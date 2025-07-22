@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+use App\Http\Responses\ApiResponse;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-class CourseController extends Controller
+class CourseController extends BaseAdminController
 {
     /**
      * Display a listing of the resource.
@@ -216,13 +217,7 @@ class CourseController extends Controller
      */
     public function toggleActive(Course $course)
     {
-        $course->update([
-            'is_active' => !$course->is_active
-        ]);
-        
-        $status = $course->is_active ? 'ativado' : 'desativado';
-        
-        return back()->with('success', "Curso {$status} com sucesso!");
+        return $this->toggleActiveStatus($course, 'Status do curso alterado com sucesso!');
     }
     
     /**
@@ -242,7 +237,7 @@ class CourseController extends Controller
             ]);
         }
         
-        return response()->json(['success' => true]);
+        return ApiResponse::success();
     }
     
     /**
@@ -309,19 +304,32 @@ class CourseController extends Controller
      */
     public function reorderModules(Request $request, Course $course)
     {
-        $validated = $request->validate([
-            'modules' => 'required|array',
-            'modules.*.id' => 'required|exists:modules,id',
-            'modules.*.order' => 'required|integer|min:1',
-        ]);
-        
-        foreach ($validated['modules'] as $moduleData) {
-            Module::where('id', $moduleData['id'])
-                ->where('course_id', $course->id)
-                ->update(['order_index' => $moduleData['order']]);
+        try {
+            \Log::info('Reordering modules for course: ' . $course->id);
+            \Log::info('Request data: ' . json_encode($request->all()));
+            
+            $validated = $request->validate([
+                'modules' => 'required|array',
+                'modules.*.id' => 'required|exists:modules,id',
+                'modules.*.order' => 'required|integer|min:1',
+            ]);
+            
+            \Log::info('Validated data: ' . json_encode($validated));
+            
+            foreach ($validated['modules'] as $moduleData) {
+                $updated = Module::where('id', $moduleData['id'])
+                    ->where('course_id', $course->id)
+                    ->update(['order_index' => $moduleData['order']]);
+                    
+                \Log::info("Updated module {$moduleData['id']} with order {$moduleData['order']}, affected rows: {$updated}");
+            }
+            
+            return ApiResponse::success();
+            
+        } catch (\Exception $e) {
+            \Log::error('Error reordering modules: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
-        
-        return response()->json(['success' => true]);
     }
     
     /**

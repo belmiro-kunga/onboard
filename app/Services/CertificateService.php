@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
+
+use App\Repositories\ModuleRepository;use App\Models\User;
 use App\Models\Module;
 use App\Models\Certificate;
 use App\Models\UserProgress;
@@ -165,7 +166,7 @@ class CertificateService implements CertificateServiceInterface
      */
     private function checkOverallCompletion(User $user): bool
     {
-        $totalModules = Module::where('is_active', true)->count();
+        $totalModules = $this->moduleRepository->countActive();
         $completedModules = UserProgress::where('user_id', $user->id)
             ->where('status', 'completed')
             ->count();
@@ -353,7 +354,7 @@ class CertificateService implements CertificateServiceInterface
     private function generateOverallCertificate(User $user): ?Certificate
     {
         $totalPoints = Module::where('is_active', true)->sum('points_reward');
-        $totalModules = Module::where('is_active', true)->count();
+        $totalModules = $this->moduleRepository->countActive();
         
         $certificateData = [
             'user_id' => $user->id,
@@ -516,7 +517,7 @@ class CertificateService implements CertificateServiceInterface
         }
         
         $totalDays = Carbon::parse($firstProgress->created_at)->diffInDays($lastProgress->updated_at);
-        $totalModules = Module::where('is_active', true)->count();
+        $totalModules = $this->moduleRepository->countActive();
         
         // Verificar se completou em menos dias do que o número de módulos
         return $totalDays < $totalModules;

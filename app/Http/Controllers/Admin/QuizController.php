@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+use App\Repositories\QuizRepository;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class QuizController extends Controller
+class QuizController extends BaseAdminController
 {
     /**
      * Exibe a lista de quizzes para administração.
      */
-    public function index(Request $request): View
+        public function index(Request $request)
     {
-        // Filtros
-        $search = $request->input('search', '');
-        $category = $request->input('category', 'all');
-        $difficulty = $request->input('difficulty', 'all');
-        $status = $request->input('status', 'all');
+        $items = $this->baseIndex(Quiz::class, $request, ['title', 'description']);
+        $stats = $this->generateStats(Quiz::class);
         
-        // Query base
-        $query = Quiz::with('module');
-        
-        // Aplicar filtros
-        if (!empty($search)) {
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
+        return $this->adminView('quizs.index', compact('items', 'stats'));
+    }%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
         }

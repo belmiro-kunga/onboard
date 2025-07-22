@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CourseEnrollment extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;, HasCommonScopes
 
     protected $fillable = [
         'user_id',
@@ -45,20 +47,14 @@ class CourseEnrollment extends Model
     /**
      * Scopes
      */
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', 'completed');
-    }
+    // Scope Completed disponível via trait HasCommonScopes
 
-    public function scopeInProgress($query)
-    {
-        return $query->where('status', 'in_progress');
-    }
 
-    public function scopeByStatus($query, $status)
-    {
-        return $query->where('status', $status);
-    }
+    // Scope InProgress disponível via trait HasCommonScopes
+
+
+    // Scope ByStatus disponível via trait HasCommonScopes
+
 
     /**
      * Accessors

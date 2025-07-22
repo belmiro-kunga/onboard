@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+
+use App\Http\Responses\ApiResponse;use App\Repositories\SimuladoRepository;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\Simulado;
 use App\Models\SimuladoQuestao;
 use App\Models\SimuladoTentativa;
@@ -12,19 +14,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-class SimuladoController extends Controller
+class SimuladoController extends BaseAdminController
 {
     /**
      * Exibe a lista de simulados.
      */
-    public function index(Request $request): View
+        public function index(Request $request)
     {
-        $query = Simulado::query();
+        $items = $this->baseIndex(Simulado::class, $request, ['titulo', 'descricao']);
+        $stats = $this->generateStats(Simulado::class);
         
-        // Filtros
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
+        return $this->adminView('simulados.index', compact('items', 'stats'));
+    }
         
         if ($request->has('search')) {
             $search = $request->search;
@@ -189,7 +190,7 @@ class SimuladoController extends Controller
     public function destroy(Simulado $simulado)
     {
         // Verificar se há tentativas para este simulado
-        $hasTentativas = SimuladoTentativa::where('simulado_id', $simulado->id)->exists();
+        $hasTentativas = $this->simuladoRepository->hasAttempts(simulado->id);
         
         if ($hasTentativas) {
             return redirect()->back()
@@ -345,7 +346,7 @@ class SimuladoController extends Controller
         }
         
         // Verificar se há tentativas para este simulado
-        $hasTentativas = SimuladoTentativa::where('simulado_id', $simulado->id)->exists();
+        $hasTentativas = $this->simuladoRepository->hasAttempts(simulado->id);
         
         if ($hasTentativas) {
             return redirect()->back()
@@ -380,7 +381,7 @@ class SimuladoController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return ApiResponse::validationError($validator->errors());
         }
         
         DB::beginTransaction();
@@ -393,7 +394,7 @@ class SimuladoController extends Controller
             }
             
             DB::commit();
-            return response()->json(['success' => true]);
+            return $this->successResponse();
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Erro ao reordenar questões: ' . $e->getMessage()], 500);

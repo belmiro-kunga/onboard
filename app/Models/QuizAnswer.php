@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\Orderable;
+use App\Models\Traits\FormattedTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -62,10 +65,8 @@ class QuizAnswer extends Model
     /**
      * Scope para respostas ativas
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Scope para respostas corretas
@@ -86,8 +87,6 @@ class QuizAnswer extends Model
     /**
      * Scope ordenado por índice
      */
-    public function scopeOrdered(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->orderBy('order_index');
-    }
+    // Scope Ordered disponível via trait
+
 }

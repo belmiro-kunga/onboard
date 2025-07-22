@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;, Cacheable
+use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,7 +29,7 @@ use App\Models\QuizAttempt; // Added this import for QuizAttempt model
  */
 class Quiz extends Model
 {
-    use HasFactory;
+    use HasFactory, HasActiveStatus, FormattedTimestamps;, HasCommonScopes, Cacheable
 
     /**
      * Os atributos que são atribuíveis em massa.
@@ -101,10 +105,8 @@ class Quiz extends Model
     /**
      * Scope para quizzes ativos.
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Retorna a melhor tentativa do usuário.

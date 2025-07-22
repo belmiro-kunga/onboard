@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+
+use App\Services\AuthService;use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class AdminAuthController extends Controller
         $credentials = $request->validated();
         
         // Verificar se o usuário existe e é admin
-        $user = User::where('email', $credentials['email'])->first();
+        $user = $this->authService->findUserByEmail(credentials['email']);
         
         if (!$user) {
             \Log::warning('Admin não encontrado', ['email' => $credentials['email']]);

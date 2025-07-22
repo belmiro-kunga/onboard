@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ModuleRating extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;
 
     /**
      * The attributes that are mass assignable.
@@ -76,10 +77,8 @@ class ModuleRating extends Model
     /**
      * Scope para avaliações recentes
      */
-    public function scopeRecent(\Illuminate\Database\Eloquent\Builder $query, int $days = 30): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('created_at', '>=', now()->subDays($days));
-    }
+    // Scope Recent disponível via trait
+
 
     /**
      * Accessors

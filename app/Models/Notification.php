@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Notification extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;, HasCommonScopes
 
     /**
      * The attributes that are mass assignable.
@@ -133,27 +135,20 @@ class Notification extends Model
     /**
      * Scope para notificações válidas (não expiradas)
      */
-    public function scopeValid(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        // Como não temos expires_at, todas as notificações são válidas
-        return $query;
-    }
+    // Scope Valid disponível via trait HasCommonScopes
+
 
     /**
      * Scope por tipo
      */
-    public function scopeByType(\Illuminate\Database\Eloquent\Builder $query, string $type): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('type', $type);
-    }
+    // Scope ByType disponível via trait HasCommonScopes
+
 
     /**
      * Scope ordenado por data
      */
-    public function scopeOrdered(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->orderBy('created_at', 'desc');
-    }
+    // Scope Ordered disponível via trait
+
 
     /**
      * Accessors

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
+
+use App\Repositories\ProgressRepository;use App\Services\AuthService;use App\Models\User;
 use App\Models\Achievement;
 use App\Models\UserGamification;
 use App\Models\PointsHistory;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Carbon\Carbon;
 
-class GamificationController extends Controller
+class GamificationController extends BaseController
 {
     /**
      * Exibe o dashboard de gamificação.
@@ -22,11 +24,11 @@ class GamificationController extends Controller
         $user = auth()->user();
         
         if (!$user) {
-            return redirect()->route('login');
+            return \App\Http\Responses\WebResponse::redirectToLogin();
         }
         
         // Buscar dados de gamificação do usuário
-        $gamification = UserGamification::where('user_id', $user->id)->first();
+        $gamification = $this->progressRepository->getUserGamification(user->id);
         
         // Se não existe, criar um registro básico
         if (!$gamification) {
@@ -63,7 +65,7 @@ class GamificationController extends Controller
         $user = auth()->user();
         
         if (!$user) {
-            return redirect()->route('login');
+            return \App\Http\Responses\WebResponse::redirectToLogin();
         }
         
         $ranking = $this->getGlobalRanking($user, 50); // Top 50
@@ -80,7 +82,7 @@ class GamificationController extends Controller
         $user = auth()->user();
         
         if (!$user) {
-            return redirect()->route('login');
+            return \App\Http\Responses\WebResponse::redirectToLogin();
         }
         
         $earnedAchievements = $user->achievements()->withPivot('earned_at')->get();

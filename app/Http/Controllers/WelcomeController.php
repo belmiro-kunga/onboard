@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
+use App\Http\Controllers\SimpleViewController;
 
-class WelcomeController extends Controller
+class WelcomeController extends SimpleViewController
 {
-    /**
-     * Exibe a página de boas-vindas.
-     */
-    public function index(): View
+    public function __construct()
     {
-        // Lógica para exibir página de boas-vindas...
-        return view('welcome');
+        parent::__construct('welcome');
     }
 }

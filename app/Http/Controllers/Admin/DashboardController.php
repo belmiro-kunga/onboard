@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+use App\Repositories\ModuleRepository;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\User;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -14,7 +15,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class DashboardController extends Controller
+class DashboardController extends BaseAdminController
 {
     /**
      * Exibe o dashboard administrativo.
@@ -64,7 +65,7 @@ class DashboardController extends Controller
         $totalCertificates = Certificate::count();
         
         // Calcular taxa média de conclusão
-        $totalModules = Module::where('is_active', true)->count();
+        $totalModules = $this->moduleRepository->countActive();
         $completedProgress = UserProgress::where('status', 'completed')->count();
         $averageCompletionRate = $totalUsers > 0 && $totalModules > 0 
             ? round(($completedProgress / ($totalUsers * $totalModules)) * 100, 1)

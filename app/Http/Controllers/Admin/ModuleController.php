@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
+use App\Http\Responses\ApiResponse;use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\Module;
 use App\Models\ModuleContent;
 use App\Models\UserProgress;
@@ -12,19 +13,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
-class ModuleController extends Controller
+class ModuleController extends BaseAdminController
 {
     /**
      * Exibe a lista de módulos.
      */
-    public function index(Request $request): View
+        public function index(Request $request)
     {
-        $query = Module::query();
+        $items = $this->baseIndex(Module::class, $request, ['title', 'description']);
+        $stats = $this->generateStats(Module::class);
         
-        // Filtros
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
-        }
+        return $this->adminView('modules.index', compact('items', 'stats'));
+    }
         
         if ($request->has('difficulty')) {
             $query->where('difficulty_level', $request->difficulty);
@@ -300,14 +300,14 @@ class ModuleController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return ApiResponse::validationError($validator->errors());
         }
         
         foreach ($request->modules as $moduleData) {
             Module::where('id', $moduleData['id'])->update(['order_index' => $moduleData['order']]);
         }
         
-        return response()->json(['success' => true]);
+        return $this->successResponse();
     }
     
     /**

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Certificate extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;, HasCommonScopes
 
     /**
      * The attributes that are mass assignable.
@@ -122,11 +124,8 @@ class Certificate extends Model
     /**
      * Scope para certificados válidos.
      */
-    public function scopeValid(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where(function($q) {
-            $q->whereNull('valid_until')->orWhere('valid_until', '>', now());
-        });
+    // Scope Valid disponível via trait
+);
     }
 
     /**

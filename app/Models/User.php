@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\Orderable;
+use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -291,10 +295,8 @@ class User extends Authenticatable
     /**
      * Scope para usuários ativos.
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Scope para buscar por papel.

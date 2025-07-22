@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\Orderable;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class QuizQuestion extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;, HasCommonScopes
 
     /**
      * The attributes that are mass assignable.
@@ -223,18 +227,14 @@ class QuizQuestion extends Model
     /**
      * Scope para questões ativas
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Scope para questões por tipo
      */
-    public function scopeByType(\Illuminate\Database\Eloquent\Builder $query, string $type): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('question_type', $type);
-    }
+    // Scope ByType disponível via trait HasCommonScopes
+
 
     /**
      * Accessors

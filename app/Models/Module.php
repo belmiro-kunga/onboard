@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasActiveStatus;
+use App\Models\Traits\Orderable;
+use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -251,26 +255,20 @@ class Module extends Model
     /**
      * Scope para módulos ativos.
      */
-    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('is_active', true);
-    }
+    // Scope Active disponível via trait
+
 
     /**
      * Scope para módulos por categoria.
      */
-    public function scopeByCategory(\Illuminate\Database\Eloquent\Builder $query, string $category): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('category', $category);
-    }
+    // Scope ByCategory disponível via trait HasCommonScopes
+
 
     /**
      * Scope para módulos ordenados.
      */
-    public function scopeOrdered(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->orderBy('order_index');
-    }
+    // Scope Ordered disponível via trait
+
 
     /**
      * Scope para módulos por dificuldade.

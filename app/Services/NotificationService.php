@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
+
+use App\Repositories\NotificationRepository;use App\Models\User;
 use App\Models\Notification;
 use App\Models\Module;
 use App\Models\UserProgress;
@@ -403,10 +404,7 @@ class NotificationService implements NotificationServiceInterface
             ->pluck('count', 'type')
             ->toArray();
         
-        $recentNotifications = Notification::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+        $recentNotifications = $this->notificationRepository->getByUser(user->id, 5);
         
         return [
             'total' => $totalNotifications,

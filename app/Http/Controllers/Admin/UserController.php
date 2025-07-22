@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class UserController extends Controller
+class UserController extends BaseAdminController
 {
     /**
      * Exibe a lista de usuários para administração.
      */
-    public function index(Request $request): View
+        public function index(Request $request)
     {
-        $query = User::with('gamification')->orderBy('created_at', 'desc');
+        $items = $this->baseIndex(User::class, $request, ['name', 'email']);
+        $stats = $this->generateStats(User::class);
         
-        // Add search functionality if search parameter exists
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+        return $this->adminView('users.index', compact('items', 'stats'));
+    }%")
                   ->orWhere('email', 'like', "%{$search}%")
                   ->orWhere('department', 'like', "%{$search}%");
             });
@@ -189,7 +187,7 @@ class UserController extends Controller
             $userIds = array_filter($userIds, fn($id) => $id != $currentUserId);
             
             if (empty($userIds)) {
-                return redirect()->back()->with('error', 'Nenhum usuário válido selecionado.');
+                return $this->backWithError('Nenhum usuário válido selecionado.');
             }
             
             $users = User::whereIn('id', $userIds)->get();
@@ -222,7 +220,7 @@ class UserController extends Controller
                 ->with('success', "{$count} usuário(s) {$actionText[$action]} com sucesso!");
                 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Erro ao executar ação em massa.');
+            return $this->backWithError('Erro ao executar ação em massa.');
         }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Simulado;
+
+use App\Repositories\SimuladoRepository;use App\Models\Simulado;
 use App\Models\SimuladoTentativa;
 use App\Models\SimuladoQuestao;
 use App\Models\SimuladoResposta;

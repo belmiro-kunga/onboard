@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ReportController extends Controller
+class ReportController extends BaseAdminController
 {
     /**
      * Exibe o dashboard de relatórios.

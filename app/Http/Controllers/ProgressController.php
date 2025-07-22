@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
+
+use App\Repositories\ProgressRepository;use App\Services\AuthService;use App\Models\User;
 use App\Models\Module;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -13,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Carbon\Carbon;
 
-class ProgressController extends Controller
+class ProgressController extends BaseController
 {
     /**
      * Exibe o progresso geral do usuário.
@@ -26,7 +28,7 @@ class ProgressController extends Controller
         $user = auth()->user();
         
         if (!$user) {
-            return redirect()->route('login');
+            return \App\Http\Responses\WebResponse::redirectToLogin();
         }
         
         $period = $request->input('period', 'month');
@@ -93,7 +95,7 @@ class ProgressController extends Controller
             ->count();
         
         // Gamificação
-        $gamification = UserGamification::where('user_id', $user->id)->first();
+        $gamification = $this->progressRepository->getUserGamification(user->id);
         $points = $gamification ? $gamification->total_points : 0;
         $level = $gamification ? $gamification->current_level : 'Rookie';
         $streak = $gamification ? $gamification->streak_days : 0;
@@ -243,9 +245,7 @@ class ProgressController extends Controller
         $progress = [];
         
         foreach ($modules as $module) {
-            $userProgress = UserProgress::where('user_id', $user->id)
-                ->where('module_id', $module->id)
-                ->first();
+            $userProgress = $this->progressRepository->getUserModuleProgress(user->id, module->id);
                 
             $status = 'not_started';
             $progressPercentage = 0;

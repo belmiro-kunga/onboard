@@ -1,0 +1,99 @@
+{
+    "refactoring_config": {
+        "enabled_phases": [
+            "analyze",
+            "controllers",
+            "models",
+            "services",
+            "views",
+            "tests"
+        ],
+        "backup": {
+            "enabled": true,
+            "retention_days": 30,
+            "directories": [
+                "app",
+                "resources",
+                "routes",
+                "database"
+            ]
+        },
+        "analysis": {
+            "max_controller_lines": 200,
+            "max_model_lines": 150,
+            "max_method_lines": 50,
+            "max_cyclomatic_complexity": 10
+        },
+        "controllers": {
+            "create_base_controller": true,
+            "create_admin_base": true,
+            "extract_common_methods": true,
+            "standardize_responses": true,
+            "implement_resource_pattern": true
+        },
+        "models": {
+            "create_traits": true,
+            "optimize_relationships": true,
+            "create_scopes": true,
+            "create_observers": true,
+            "implement_soft_deletes": true
+        },
+        "services": {
+            "create_interfaces": true,
+            "implement_repository_pattern": false,
+            "optimize_existing": true,
+            "add_caching": true
+        },
+        "views": {
+            "create_components": true,
+            "optimize_layouts": true,
+            "extract_partials": true,
+            "implement_vue_components": false
+        },
+        "tests": {
+            "create_base_test": true,
+            "generate_model_tests": true,
+            "generate_service_tests": true,
+            "generate_controller_tests": true,
+            "target_coverage": 80
+        },
+        "code_standards": {
+            "psr12_compliance": true,
+            "laravel_conventions": true,
+            "custom_rules": [
+                "Use dependency injection",
+                "Follow SOLID principles",
+                "Implement proper error handling",
+                "Add comprehensive documentation"
+            ]
+        },
+        "performance": {
+            "optimize_queries": true,
+            "implement_caching": true,
+            "lazy_loading": true,
+            "compress_assets": true
+        }
+    },
+    "excluded_files": [
+        "vendor/*",
+        "node_modules/*",
+        "storage/*",
+        "bootstrap/cache/*",
+        ".git/*"
+    ],
+    "naming_conventions": {
+        "controllers": "PascalCase + Controller suffix",
+        "models": "PascalCase singular",
+        "services": "PascalCase + Service suffix",
+        "traits": "PascalCase with descriptive name",
+        "methods": "camelCase",
+        "variables": "camelCase",
+        "constants": "UPPER_SNAKE_CASE"
+    },
+    "documentation": {
+        "generate_api_docs": true,
+        "update_readme": true,
+        "create_architecture_docs": true,
+        "document_changes": true
+    }
+}

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\FormattedTimestamps;
+use App\Models\Traits\HasCommonScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class UserProgress extends Model
 {
-    use HasFactory;
+    use HasFactory, FormattedTimestamps;, HasCommonScopes
 
     /**
      * The attributes that are mass assignable.
@@ -178,18 +180,14 @@ class UserProgress extends Model
     /**
      * Scope para progresso concluído.
      */
-    public function scopeCompleted(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('status', 'completed');
-    }
+    // Scope Completed disponível via trait HasCommonScopes
+
 
     /**
      * Scope para progresso em andamento.
      */
-    public function scopeInProgress(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-    {
-        return $query->where('status', 'in_progress');
-    }
+    // Scope InProgress disponível via trait HasCommonScopes
+
 
     /**
      * Scope para progresso não iniciado
