@@ -88,6 +88,35 @@ class User extends Authenticatable
     }
 
     /**
+     * Relacionamento: inscrições em cursos
+     */
+    public function courseEnrollments(): HasMany
+    {
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    /**
+     * Relacionamento: cursos inscritos
+     */
+    public function enrolledCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'course_enrollments')
+                    ->withPivot(['enrolled_at', 'started_at', 'completed_at', 'progress_percentage', 'status', 'completion_data'])
+                    ->withTimestamps();
+    }
+
+    /**
+     * Relacionamento: cursos completados
+     */
+    public function completedCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'course_enrollments')
+                    ->wherePivot('status', 'completed')
+                    ->withPivot(['completed_at', 'progress_percentage', 'completion_data'])
+                    ->withTimestamps();
+    }
+
+    /**
      * Relacionamento: gamificação do usuário.
      */
     public function gamification(): HasOne

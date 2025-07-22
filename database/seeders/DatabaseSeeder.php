@@ -15,11 +15,14 @@ class DatabaseSeeder extends Seeder
         // $this->call(UserSeeder::class);
         
         $this->call([
+            AdminUserSeeder::class,
             TestUserSeeder::class,
+            CourseSeeder::class,
             ModuleSeeder::class,
             QuizSeeder::class,
             AchievementSeeder::class,
             SimuladoSeeder::class,
+            DashboardDataSeeder::class,
         ]);
     }
 }

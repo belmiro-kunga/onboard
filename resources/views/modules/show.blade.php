@@ -90,21 +90,35 @@
                             
                             <!-- Navegação entre Vídeos -->
                             <div class="flex items-center justify-between">
-                                <button class="flex items-center px-4 py-2 bg-hcp-secondary-100 dark:bg-hcp-secondary-700 text-hcp-secondary-700 dark:text-hcp-secondary-300 rounded-lg hover:bg-hcp-secondary-200 dark:hover:bg-hcp-secondary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                        {{ $currentVideoIndex <= 0 ? 'disabled' : '' }}>
-                                    <x-icon name="chevron-left" size="sm" class="mr-2" />
-                                    <span class="text-sm font-medium">Anterior</span>
-                                </button>
+                                @if($currentVideoIndex > 0)
+                                    <a href="{{ route('modules.show.video', ['module' => $module['id'], 'videoIndex' => $currentVideoIndex - 1]) }}" 
+                                       class="flex items-center px-4 py-2 bg-hcp-secondary-100 dark:bg-hcp-secondary-700 text-hcp-secondary-700 dark:text-hcp-secondary-300 rounded-lg hover:bg-hcp-secondary-200 dark:hover:bg-hcp-secondary-600 transition-colors">
+                                        <x-icon name="chevron-left" size="sm" class="mr-2" />
+                                        <span class="text-sm font-medium">Anterior</span>
+                                    </a>
+                                @else
+                                    <button class="flex items-center px-4 py-2 bg-hcp-secondary-100 dark:bg-hcp-secondary-700 text-hcp-secondary-700 dark:text-hcp-secondary-300 rounded-lg opacity-50 cursor-not-allowed" disabled>
+                                        <x-icon name="chevron-left" size="sm" class="mr-2" />
+                                        <span class="text-sm font-medium">Anterior</span>
+                                    </button>
+                                @endif
                                 
                                 <div class="text-sm text-hcp-secondary-600 dark:text-hcp-secondary-400">
                                     Aula {{ $currentVideoIndex + 1 }} de {{ count($module['videos']) }}
                                 </div>
                                 
-                                <button class="flex items-center px-4 py-2 bg-hcp-gradient text-white rounded-lg hover:shadow-hcp-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        {{ $currentVideoIndex >= count($module['videos']) - 1 ? 'disabled' : '' }}>
-                                    <span class="text-sm font-medium">Próxima</span>
-                                    <x-icon name="chevron-right" size="sm" class="ml-2" />
-                                </button>
+                                @if($currentVideoIndex < count($module['videos']) - 1)
+                                    <a href="{{ route('modules.show.video', ['module' => $module['id'], 'videoIndex' => $currentVideoIndex + 1]) }}" 
+                                       class="flex items-center px-4 py-2 bg-hcp-gradient text-white rounded-lg hover:shadow-hcp-lg transition-all duration-200">
+                                        <span class="text-sm font-medium">Próxima</span>
+                                        <x-icon name="chevron-right" size="sm" class="ml-2" />
+                                    </a>
+                                @else
+                                    <button class="flex items-center px-4 py-2 bg-hcp-gradient text-white rounded-lg opacity-50 cursor-not-allowed" disabled>
+                                        <span class="text-sm font-medium">Próxima</span>
+                                        <x-icon name="chevron-right" size="sm" class="ml-2" />
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -157,8 +171,8 @@
                         
                         <div class="max-h-96 overflow-y-auto">
                             @foreach($module['videos'] as $index => $video)
-                                <div class="video-item p-4 border-b border-hcp-secondary-100 dark:border-hcp-secondary-700 hover:bg-hcp-secondary-50 dark:hover:bg-hcp-secondary-700 cursor-pointer transition-colors {{ $index === $currentVideoIndex ? 'bg-hcp-50 dark:bg-hcp-secondary-700 border-l-4 border-l-hcp-500' : '' }}"
-                                     onclick="changeVideo({{ $index }})">
+                                <a href="{{ route('modules.show.video', ['module' => $module['id'], 'videoIndex' => $index]) }}" 
+                                   class="video-item block p-4 border-b border-hcp-secondary-100 dark:border-hcp-secondary-700 hover:bg-hcp-secondary-50 dark:hover:bg-hcp-secondary-700 transition-colors {{ $index === $currentVideoIndex ? 'bg-hcp-50 dark:bg-hcp-secondary-700 border-l-4 border-l-hcp-500' : '' }}">
                                     <div class="flex items-start space-x-3">
                                         <div class="relative flex-shrink-0">
                                             <img src="https://img.youtube.com/vi/{{ $video['youtube_id'] }}/mqdefault.jpg" 
@@ -188,7 +202,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                         
@@ -214,129 +228,31 @@
     
     @push('scripts')
     <script>
-        let currentVideoIndex = {{ $currentVideoIndex }};
-        const videos = @json($module['videos']);
-        
-        function changeVideo(index) {
-            if (index >= 0 && index < videos.length) {
-                currentVideoIndex = index;
-                const video = videos[index];
-                
-                // Atualizar iframe
-                const iframe = document.getElementById('youtube-player');
-                iframe.src = `https://www.youtube.com/embed/${video.youtube_id}?autoplay=1&rel=0&modestbranding=1`;
-                
-                // Atualizar título
-                const titleElement = document.querySelector('h1');
-                if (titleElement) {
-                    titleElement.textContent = video.title;
-                }
-                
-                // Atualizar informações do vídeo
-                const infoContainer = document.querySelector('.flex.items-center.space-x-4');
-                if (infoContainer) {
-                    infoContainer.innerHTML = `
-                        <span class="flex items-center">
-                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                            </svg>
-                            ${video.duration}
-                        </span>
-                        <span class="flex items-center">
-                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            ${video.views || '1.2K'} visualizações
-                        </span>
-                        <span class="flex items-center">
-                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                            </svg>
-                            ${video.published || 'há 2 dias'}
-                        </span>
-                    `;
-                }
-                
-                // Atualizar progresso do vídeo
-                const progressBar = document.querySelector('.bg-gradient-to-r.from-hcp-500.to-hcp-600');
-                const progressText = document.querySelector('.font-bold.text-hcp-500');
-                if (progressBar) {
-                    progressBar.style.width = `${video.progress || 0}%`;
-                }
-                if (progressText) {
-                    progressText.textContent = `${video.progress || 0}%`;
-                }
-                
-                // Atualizar indicador de aula atual
-                document.querySelectorAll('.video-item').forEach((item, i) => {
-                    if (i === index) {
-                        item.classList.add('bg-hcp-50', 'dark:bg-hcp-secondary-700', 'border-l-4', 'border-l-hcp-500');
-                        // Adicionar ícone de play no vídeo atual
-                        const playIcon = item.querySelector('.absolute.inset-0');
-                        if (playIcon) {
-                            playIcon.style.display = 'flex';
-                        }
-                    } else {
-                        item.classList.remove('bg-hcp-50', 'dark:bg-hcp-secondary-700', 'border-l-4', 'border-l-hcp-500');
-                        // Remover ícone de play dos outros vídeos
-                        const playIcon = item.querySelector('.absolute.inset-0');
-                        if (playIcon) {
-                            playIcon.style.display = 'none';
-                        }
-                    }
-                });
-                
-                // Atualizar contador de aula
-                const lessonCounter = document.querySelector('.text-sm.text-hcp-secondary-600.dark\\:text-hcp-secondary-400');
-                if (lessonCounter) {
-                    lessonCounter.textContent = `Aula ${index + 1} de ${videos.length}`;
-                }
-                
-                // Atualizar botões de navegação
-                const prevBtn = document.querySelector('button:first-of-type');
-                const nextBtn = document.querySelector('.bg-hcp-gradient');
-                
-                if (prevBtn) {
-                    prevBtn.disabled = index <= 0;
-                    prevBtn.onclick = () => changeVideo(index - 1);
-                }
-                if (nextBtn) {
-                    nextBtn.disabled = index >= videos.length - 1;
-                    nextBtn.onclick = () => changeVideo(index + 1);
-                }
-            }
-        }
-        
-        // Inicializar quando a página carregar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar botões de navegação
-            const prevBtn = document.querySelector('button:first-of-type');
-            const nextBtn = document.querySelector('.bg-hcp-gradient');
+        // Navegação por teclado entre vídeos
+        document.addEventListener('keydown', function(e) {
+            const currentVideoIndex = {{ $currentVideoIndex }};
+            const totalVideos = {{ count($module['videos']) }};
+            const moduleId = {{ $module['id'] }};
             
-            if (prevBtn) {
-                prevBtn.onclick = () => {
-                    if (currentVideoIndex > 0) {
-                        changeVideo(currentVideoIndex - 1);
-                    }
-                };
-            }
-            
-            if (nextBtn) {
-                nextBtn.onclick = () => {
-                    if (currentVideoIndex < videos.length - 1) {
-                        changeVideo(currentVideoIndex + 1);
-                    }
-                };
+            if (e.key === 'ArrowLeft' && currentVideoIndex > 0) {
+                // Navegar para vídeo anterior
+                window.location.href = `/modules/${moduleId}/video/${currentVideoIndex - 1}`;
+            } else if (e.key === 'ArrowRight' && currentVideoIndex < totalVideos - 1) {
+                // Navegar para próximo vídeo
+                window.location.href = `/modules/${moduleId}/video/${currentVideoIndex + 1}`;
             }
         });
         
-        // Navegação por teclado
+        // Adicionar indicador visual quando teclas são pressionadas
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft' && currentVideoIndex > 0) {
-                changeVideo(currentVideoIndex - 1);
-            } else if (e.key === 'ArrowRight' && currentVideoIndex < videos.length - 1) {
-                changeVideo(currentVideoIndex + 1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                // Adicionar feedback visual
+                const body = document.body;
+                body.style.transition = 'opacity 0.1s';
+                body.style.opacity = '0.9';
+                setTimeout(() => {
+                    body.style.opacity = '1';
+                }, 100);
             }
         });
     </script>

@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 // Página de boas-vindas pública
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-// Rotas de autenticação
+// Rotas de autenticação - Funcionários
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -32,6 +32,21 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+});
+
+// Rotas de autenticação - Administradores
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Rotas para visitantes
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [App\Http\Controllers\Auth\AdminAuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [App\Http\Controllers\Auth\AdminAuthController::class, 'login']);
+    });
+    
+    // Rotas para admins autenticados
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\Auth\AdminAuthController::class, 'dashboard'])->name('dashboard');
+        Route::post('/logout', [App\Http\Controllers\Auth\AdminAuthController::class, 'logout'])->name('logout');
+    });
 });
 
 // Rota para renovar token CSRF (sem middleware de autenticação para funcionar sempre)
@@ -51,9 +66,20 @@ Route::middleware(['auth', 'active.user'])->group(function () {
         return view('test');
     });
     
+    // Sistema de Cursos
+    Route::prefix('courses')->name('courses.')->group(function () {
+        Route::get('/', [App\Http\Controllers\CourseController::class, 'index'])->name('index');
+        Route::get('/{course}', [App\Http\Controllers\CourseController::class, 'show'])->name('show');
+        Route::post('/{course}/enroll', [App\Http\Controllers\CourseController::class, 'enroll'])->name('enroll');
+        Route::post('/{course}/start', [App\Http\Controllers\CourseController::class, 'start'])->name('start');
+        Route::get('/{course}/progress', [App\Http\Controllers\CourseController::class, 'progress'])->name('progress');
+        Route::get('/{course}/certificate', [App\Http\Controllers\CourseController::class, 'certificate'])->name('certificate');
+    });
+
     // Módulos de aprendizado
     Route::get('/modules', [App\Http\Controllers\ModuleController::class, 'index'])->name('modules.index');
     Route::get('/modules/{module}', [App\Http\Controllers\ModuleController::class, 'show'])->name('modules.show');
+    Route::get('/modules/{module}/video/{videoIndex}', [App\Http\Controllers\ModuleController::class, 'showVideo'])->name('modules.show.video');
     
     // Tracking de progresso
     Route::post('/modules/{module}/content/{content}/viewed', [App\Http\Controllers\ModuleController::class, 'markContentAsViewed'])
@@ -135,6 +161,19 @@ Route::middleware(['auth', 'active.user'])->group(function () {
         Route::get('/', [App\Http\Controllers\AnalyticsController::class, 'index'])->name('index');
     });
 
+    // Mapa Interativo da Empresa
+    Route::prefix('company-map')->name('company-map.')->group(function () {
+        Route::get('/', [App\Http\Controllers\CompanyMapController::class, 'index'])->name('index');
+        Route::get('/department-info', [App\Http\Controllers\CompanyMapController::class, 'getDepartmentInfo'])->name('department-info');
+    });
+
+    // Linha do Tempo da Empresa
+    Route::prefix('timeline')->name('timeline.')->group(function () {
+        Route::get('/', [App\Http\Controllers\TimelineController::class, 'index'])->name('index');
+        Route::get('/event/{event}', [App\Http\Controllers\TimelineController::class, 'show'])->name('show');
+        Route::get('/filter', [App\Http\Controllers\TimelineController::class, 'filterByCategory'])->name('filter');
+    });
+
     // Perfil do Usuário
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
@@ -167,14 +206,51 @@ Route::middleware(['auth', 'active.user'])->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         
         // Gerenciamento de Usuários
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/dashboard', [App\Http\Controllers\Admin\UserDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/chart-data', [App\Http\Controllers\Admin\UserDashboardController::class, 'getChartData'])->name('chart-data');
+            Route::get('/by-department', [App\Http\Controllers\Admin\UserDashboardController::class, 'getUsersByDepartment'])->name('by-department');
+            Route::get('/recent-activity', [App\Http\Controllers\Admin\UserDashboardController::class, 'getRecentActivity'])->name('recent-activity');
+            Route::get('/engagement-analysis', [App\Http\Controllers\Admin\UserDashboardController::class, 'getEngagementAnalysis'])->name('engagement-analysis');
+            Route::get('/action-suggestions', [App\Http\Controllers\Admin\UserDashboardController::class, 'getActionSuggestions'])->name('action-suggestions');
+            Route::post('/export-report', [App\Http\Controllers\Admin\UserDashboardController::class, 'exportReport'])->name('export-report');
+        });
+        
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::post('users/{user}/toggle-active', [App\Http\Controllers\Admin\UserController::class, 'toggleActive'])->name('users.toggle-active');
         Route::post('users/bulk-action', [App\Http\Controllers\Admin\UserController::class, 'bulkAction'])->name('users.bulk-action');
         
+        // Gerenciamento de Cursos
+        Route::prefix('courses')->name('courses.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])->name('create');
+            Route::post('/', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('store');
+            Route::get('/{course}', [App\Http\Controllers\Admin\CourseController::class, 'show'])->name('show');
+            Route::get('/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])->name('edit');
+            Route::put('/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('update');
+            Route::delete('/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('destroy');
+            Route::post('/{course}/toggle-active', [App\Http\Controllers\Admin\CourseController::class, 'toggleActive'])->name('toggle-active');
+            Route::post('/reorder', [App\Http\Controllers\Admin\CourseController::class, 'reorder'])->name('reorder');
+            
+            // Módulos do curso
+            Route::get('/{course}/modules', [App\Http\Controllers\Admin\CourseController::class, 'modules'])->name('modules');
+            Route::post('/{course}/modules', [App\Http\Controllers\Admin\CourseController::class, 'addModule'])->name('modules.add');
+            Route::delete('/{course}/modules/{module}', [App\Http\Controllers\Admin\CourseController::class, 'removeModule'])->name('modules.remove');
+            Route::post('/{course}/modules/reorder', [App\Http\Controllers\Admin\CourseController::class, 'reorderModules'])->name('course.modules.reorder');
+            
+            // Inscrições
+            Route::get('/{course}/enrollments', [App\Http\Controllers\Admin\CourseController::class, 'enrollments'])->name('enrollments');
+            Route::post('/{course}/enrollments', [App\Http\Controllers\Admin\CourseController::class, 'enrollUsers'])->name('enrollments.store');
+            Route::get('/{course}/available-users', [App\Http\Controllers\Admin\CourseController::class, 'getAvailableUsers'])->name('available-users');
+            
+            // Relatórios
+            Route::get('/{course}/reports', [App\Http\Controllers\Admin\CourseController::class, 'reports'])->name('reports');
+        });
+
         // Gerenciamento de Módulos
         Route::resource('modules', App\Http\Controllers\Admin\ModuleController::class);
         Route::post('modules/{module}/toggle-active', [App\Http\Controllers\Admin\ModuleController::class, 'toggleActive'])->name('modules.toggle-active');
-        Route::post('modules/reorder', [App\Http\Controllers\Admin\ModuleController::class, 'reorder'])->name('modules.reorder');
+        Route::post('modules/reorder', [App\Http\Controllers\Admin\ModuleController::class, 'reorder'])->name('modules.global.reorder');
         Route::get('modules/{module}/contents', [App\Http\Controllers\Admin\ModuleController::class, 'contents'])->name('modules.contents');
         Route::post('modules/{module}/contents', [App\Http\Controllers\Admin\ModuleController::class, 'addContent'])->name('modules.contents.add');
         Route::delete('modules/{module}/contents/{content}', [App\Http\Controllers\Admin\ModuleController::class, 'removeContent'])->name('modules.contents.remove');

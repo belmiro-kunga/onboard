@@ -36,6 +36,7 @@ class Module extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'course_id',
         'title',
         'description',
         'category',
@@ -48,6 +49,8 @@ class Module extends Model
         'thumbnail',
         'difficulty_level',
         'prerequisites',
+        'requirements',
+        'duration_minutes',
     ];
 
     /**
@@ -61,10 +64,20 @@ class Module extends Model
         'estimated_duration' => 'integer',
         'content_data' => 'array',
         'prerequisites' => 'array',
+        'requirements' => 'array',
+        'duration_minutes' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * Relacionamento: curso ao qual o módulo pertence
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
     /**
      * Relacionamento: conteúdos do módulo.
