@@ -231,6 +231,7 @@ Route::middleware(['auth', 'active.user'])->group(function () {
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::post('users/{user}/toggle-active', [App\Http\Controllers\Admin\UserController::class, 'toggleActive'])->name('users.toggle-active');
         Route::post('users/bulk-action', [App\Http\Controllers\Admin\UserController::class, 'bulkAction'])->name('users.bulk-action');
+        Route::get('/users/suggest', [\App\Http\Controllers\Admin\UserController::class, 'suggest'])->name('admin.users.suggest');
         
         // Gerenciamento de Cursos
         Route::prefix('courses')->name('courses.')->group(function () {
@@ -345,6 +346,25 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             Route::post('/reorder', [App\Http\Controllers\Admin\LessonController::class, 'reorder'])->name('reorder');
             Route::post('/{lesson}/duplicate', [App\Http\Controllers\Admin\LessonController::class, 'duplicate'])->name('duplicate');
             Route::get('/{lesson}/engagement-report', [App\Http\Controllers\Admin\LessonController::class, 'engagementReport'])->name('engagement-report');
+        });
+
+        // Gerenciamento de Atribuições
+        Route::prefix('assignments')->name('assignments.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\UserAssignmentController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\Admin\UserAssignmentController::class, 'create'])->name('create');
+            Route::post('/', [App\Http\Controllers\Admin\UserAssignmentController::class, 'store'])->name('store');
+            Route::get('/{assignment}', [App\Http\Controllers\Admin\UserAssignmentController::class, 'show'])->name('show');
+            Route::get('/{assignment}/edit', [App\Http\Controllers\Admin\UserAssignmentController::class, 'edit'])->name('edit');
+            Route::put('/{assignment}', [App\Http\Controllers\Admin\UserAssignmentController::class, 'update'])->name('update');
+            Route::delete('/{assignment}', [App\Http\Controllers\Admin\UserAssignmentController::class, 'destroy'])->name('destroy');
+            Route::post('/{assignment}/update-status', [App\Http\Controllers\Admin\UserAssignmentController::class, 'updateStatus'])->name('update-status');
+            Route::get('/dashboard', [App\Http\Controllers\Admin\UserAssignmentController::class, 'dashboard'])->name('dashboard');
+        });
+
+        // Atribuições por usuário
+        Route::prefix('users/{user}/assignments')->name('users.assignments.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\UserAssignmentController::class, 'assignToUser'])->name('create');
+            Route::post('/', [App\Http\Controllers\Admin\UserAssignmentController::class, 'storeUserAssignments'])->name('store');
         });
     });
     

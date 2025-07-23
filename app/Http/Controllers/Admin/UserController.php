@@ -2,33 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\BaseAdminController;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class UserController extends BaseAdminController
+class UserController extends Controller
 {
     /**
      * Exibe a lista de usuários para administração.
      */
-        public function index(Request $request)
-    {
-        $items = $this->baseIndex(User::class, $request, ['name', 'email']);
-        $stats = $this->generateStats(User::class);
-        
-        return $this->adminView('users.index', compact('items', 'stats'));
-    }
-
-    /**
-     * Get filtered users query
-     */
-    protected function getFilteredQuery($request)
+    public function index(Request $request): View
     {
         $query = User::query();
         
-        // Add search filter if search parameter exists
+        // Filtro de busca
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -38,12 +27,12 @@ class UserController extends BaseAdminController
             });
         }
         
-        // Add role filter if role parameter exists
+        // Filtro por papel
         if ($request->has('role') && !empty($request->role)) {
             $query->where('role', $request->role);
         }
         
-        // Add status filter if status parameter exists
+        // Filtro por status
         if ($request->has('status') && !empty($request->status)) {
             if ($request->status === 'active') {
                 $query->where('is_active', true);
@@ -52,7 +41,7 @@ class UserController extends BaseAdminController
             }
         }
         
-        $users = $query->paginate(15);
+        $users = $query->orderBy('name')->paginate(15);
         
         return view('admin.users.index', compact('users'));
     }
@@ -94,7 +83,7 @@ class UserController extends BaseAdminController
      */
     public function show(int $userId): View
     {
-        $user = User::with(['gamification', 'progress', 'achievements'])->findOrFail($userId);
+        $user = User::findOrFail($userId);
         return view('admin.users.show', compact('user'));
     }
 
@@ -142,77 +131,17 @@ class UserController extends BaseAdminController
     /**
      * Remove um usuário.
      */
-    public function destroy(int $userId): RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
-        $user = User::findOrFail($userId);
+        // Verificar se há atribuições relacionadas
+        if ($user->assignments()->exists() || $user->assignmentsMade()->exists()) {
+            return redirect()->back()
+                ->with('error', 'Não é possível excluir este usuário pois existem atribuições relacionadas.');
+        }
+
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'Usuário removido com sucesso!');
-    }
 
-    /**
-     * Alterna o status ativo/inativo do usuário.
-     */
-    public function toggleActive(int $userId)
-    {
-        try {
-            $user = User::findOrFail($userId);
-            
-            // Não permitir desativar o próprio usuário
-            if ($user->id === auth()->id()) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Você não pode desativar sua própria conta.'
-                ], 400);
-            }
-            
-            $user->is_active = !$user->is_active;
-            $user->save();
-            
-            return response()->json([
-                'success' => true,
-                'message' => $user->is_active ? 'Usuário ativado com sucesso!' : 'Usuário desativado com sucesso!',
-                'is_active' => $user->is_active
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Erro ao alterar status do usuário.'
-            ], 500);
-        }
-    }
-
-    /**
-     * Executa ações em massa nos usuários selecionados.
-     */
-    public function bulkActionUsers(Request $request)
-    {
-        // Validar dados de entrada
-        $validated = $request->validate([
-            'action' => 'required|in:activate,deactivate,delete',
-            'users' => 'required|json'
-        ]);
-
-        try {
-            $userIds = json_decode($validated['users'], true);
-            $currentUserId = auth()->id();
-            
-            // Remover o usuário atual da lista para evitar auto-modificação
-            $userIds = array_filter($userIds, fn($id) => $id != $currentUserId);
-            
-            if (empty($userIds)) {
-                return $this->backWithError('Nenhum usuário válido selecionado.');
-            }
-            
-            // Preparar request para o método pai
-            $bulkRequest = new Request([
-                'action' => $validated['action'],
-                'ids' => $userIds
-            ]);
-            
-            return parent::bulkAction($bulkRequest, User::class, ['activate', 'deactivate', 'delete']);
-            
-        } catch (\Exception $e) {
-            return $this->backWithError('Erro na ação em lote: ' . $e->getMessage());
-        }
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Usuário excluído com sucesso!');
     }
 }

@@ -167,28 +167,7 @@
                         </div>
                     </div>
 
-                    <!-- User Statistics (Read-only) -->
-                    @if($user->gamification)
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Estatísticas do Usuário</h3>
-                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                                <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Pontos Totais</div>
-                                <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($user->gamification->total_points ?? 0) }}</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                                <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Nível Atual</div>
-                                <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $user->gamification->current_level ?? 'Iniciante' }}</div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                                <div class="text-sm font-medium text-gray-500 dark:text-gray-400">Último Login</div>
-                                <div class="text-sm text-gray-900 dark:text-white">
-                                    {{ $user->last_login_at ? $user->last_login_at->format('d/m/Y H:i') : 'Nunca' }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
+
 
                     <!-- Form Actions -->
                     <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
