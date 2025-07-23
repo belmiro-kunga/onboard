@@ -12,6 +12,13 @@ use Carbon\Carbon;
 
 class UserDashboardController extends BaseAdminController
 {
+    private AuthService $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     /**
      * Exibir dashboard de gestão de usuários
      */

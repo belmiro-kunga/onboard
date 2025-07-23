@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Certificate extends Model
 {
-    use HasFactory, FormattedTimestamps;, HasCommonScopes
+    use HasFactory, FormattedTimestamps, HasCommonScopes;
 
     /**
      * The attributes that are mass assignable.
@@ -125,8 +125,6 @@ class Certificate extends Model
      * Scope para certificados válidos.
      */
     // Scope Valid disponível via trait
-);
-    }
 
     /**
      * Verifica se o certificado está expirado.

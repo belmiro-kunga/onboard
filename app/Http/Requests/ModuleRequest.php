@@ -17,13 +17,20 @@ class ModuleRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'category' => 'nullable|string|max:100',
             'content_type' => ['required', Rule::in(['video', 'text', 'quiz', 'mixed'])],
             'duration_minutes' => 'required|integer|min:1',
+            'estimated_duration' => 'nullable|integer|min:1',
             'difficulty_level' => ['required', Rule::in(['beginner', 'intermediate', 'advanced'])],
             'is_active' => 'boolean',
             'order_index' => 'nullable|integer|min:0',
             'course_id' => 'nullable|exists:courses,id',
+            'points_reward' => 'nullable|integer|min:0',
             'thumbnail' => 'nullable|image|max:2048',
+            'prerequisites' => 'nullable|array',
+            'prerequisites.*' => 'exists:modules,id',
+            'requirements' => 'nullable|array',
+            'content_data' => 'nullable|array',
         ];
     }
 

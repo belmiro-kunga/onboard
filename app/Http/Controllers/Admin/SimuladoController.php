@@ -26,26 +26,6 @@ class SimuladoController extends BaseAdminController
         
         return $this->adminView('simulados.index', compact('items', 'stats'));
     }
-        
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('titulo', 'like', "%{$search}%")
-                  ->orWhere('descricao', 'like', "%{$search}%")
-                  ->orWhere('categoria', 'like', "%{$search}%");
-            });
-        }
-        
-        // Ordenação
-        $orderBy = $request->get('order_by', 'created_at');
-        $orderDirection = $request->get('order_direction', 'desc');
-        $query->orderBy($orderBy, $orderDirection);
-        
-        // Paginação
-        $simulados = $query->paginate(10);
-        
-        return view('admin.simulados.index', compact('simulados'));
-    }
 
     /**
      * Exibe o formulário para criar um novo simulado.

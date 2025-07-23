@@ -13,6 +13,13 @@ use Illuminate\View\View;
 
 class AdminAuthController extends Controller
 {
+    protected AuthService $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     /**
      * Exibir formulário de login do admin
      */
@@ -35,7 +42,7 @@ class AdminAuthController extends Controller
         $credentials = $request->validated();
         
         // Verificar se o usuário existe e é admin
-        $user = $this->authService->findUserByEmail(credentials['email']);
+        $user = $this->authService->findUserByEmail($credentials['email']);
         
         if (!$user) {
             \Log::warning('Admin não encontrado', ['email' => $credentials['email']]);

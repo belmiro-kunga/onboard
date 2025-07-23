@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Notification extends Model
 {
-    use HasFactory, FormattedTimestamps;, HasCommonScopes
+    use HasFactory, FormattedTimestamps, HasCommonScopes;
 
     /**
      * The attributes that are mass assignable.

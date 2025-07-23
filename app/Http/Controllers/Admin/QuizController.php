@@ -20,35 +20,6 @@ class QuizController extends BaseAdminController
         $stats = $this->generateStats(Quiz::class);
         
         return $this->adminView('quizs.index', compact('items', 'stats'));
-    }%")
-                  ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-        
-        if ($category !== 'all') {
-            $query->where('category', $category);
-        }
-        
-        if ($difficulty !== 'all') {
-            $query->where('difficulty', $difficulty);
-        }
-        
-        if ($status !== 'all') {
-            $query->where('is_active', $status === 'active');
-        }
-        
-        // Estatísticas
-        $stats = [
-            'total_quizzes' => Quiz::count(),
-            'active_quizzes' => Quiz::where('is_active', true)->count(),
-            'total_attempts' => \App\Models\QuizAttempt::count(),
-            'average_score' => \App\Models\QuizAttempt::whereNotNull('completed_at')->avg('score') ?? 0,
-        ];
-        
-        // Obter quizzes paginados
-        $quizzes = $query->orderBy('created_at', 'desc')->paginate(12);
-        
-        return view('admin.quizzes.index', compact('quizzes', 'stats', 'search', 'category', 'difficulty', 'status'));
     }
 
     /**

@@ -53,10 +53,31 @@ abstract class BaseAdminController extends BaseController
         try {
             $model->update(['is_active' => !$model->is_active]);
             $status = $model->is_active ? 'ativado' : 'desativado';
+            $message = "{$successMessage} Item {$status}.";
             
-            return $this->backWithSuccess("{$successMessage} Item {$status}.");
+            // Se for requisição AJAX, retorna JSON
+            if (request()->expectsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => $message,
+                    'is_active' => $model->is_active,
+                    'status' => $status
+                ]);
+            }
+            
+            return $this->backWithSuccess($message);
         } catch (\Exception $e) {
-            return $this->backWithError('Erro ao alterar status: ' . $e->getMessage());
+            $errorMessage = 'Erro ao alterar status: ' . $e->getMessage();
+            
+            // Se for requisição AJAX, retorna JSON de erro
+            if (request()->expectsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage
+                ], 422);
+            }
+            
+            return $this->backWithError($errorMessage);
         }
     }
 

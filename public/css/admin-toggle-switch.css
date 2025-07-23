@@ -1,0 +1,104 @@
+/* ===== ESTILOS PARA TOGGLE SWITCH ===== */
+
+/* Estilo base para o toggle */
+.toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Estilo para o track do toggle */
+.toggle-switch .peer {
+    width: 44px;
+    height: 24px;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+}
+
+/* Estilo para o track quando ativo */
+.toggle-switch .peer-checked\:bg-green-500 {
+    background-color: #10b981;
+}
+
+/* Estilo para o slider (círculo) */
+.toggle-switch .toggle-slider {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 9999px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estilo para o slider quando ativo */
+.toggle-switch .peer-checked\:translate-x-5 {
+    transform: translateX(20px);
+}
+
+/* Efeito de hover */
+.toggle-switch:hover .peer {
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.toggle-switch:hover .toggle-slider {
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+/* Efeito de foco */
+.toggle-switch .peer-focus\:outline-none:focus {
+    outline: none;
+}
+
+.toggle-switch .peer-focus\:ring-2:focus {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+}
+
+/* Animações */
+@keyframes togglePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes toggleCircleJump {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+.toggle-animation {
+    animation: togglePulse 0.5s ease-in-out;
+}
+
+.toggle-circle-animation {
+    animation: toggleCircleJump 0.5s ease-in-out;
+}
+
+/* Spinner de loading */
+.loading-spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 9999px;
+    z-index: 10;
+}
+
+/* Tema escuro */
+@media (prefers-color-scheme: dark) {
+    .toggle-switch .peer {
+        background-color: #374151;
+    }
+    
+    .toggle-switch:hover .peer {
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+    }
+}

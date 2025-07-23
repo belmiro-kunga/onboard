@@ -190,15 +190,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden bg-slate-700">
-                                                @if($course->thumbnail)
-                                                    <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="{{ $course->title }}" class="h-12 w-12 object-cover">
-                                                @else
-                                                    <div class="h-12 w-12 flex items-center justify-center bg-purple-500/20">
-                                                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                                        </svg>
-                                                    </div>
-                                                @endif
+                                                <div class="h-12 w-12 flex items-center justify-center bg-purple-500/20">
+                                                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                                    </svg>
+                                                </div>
                                             </div>
                                             <div>
                                                 <div class="text-sm font-medium text-white">{{ $course->title }}</div>
@@ -259,18 +255,23 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
                                             </a>
-                                            <form id="toggle-course-{{ $course->id }}" action="{{ route('admin.courses.toggle-active', $course) }}" method="POST" class="inline" onsubmit="return showToggleCourseModal(this);">
-                                                @csrf
-                                                <label class="inline-flex relative items-center cursor-pointer">
+                                            <!-- Toggle Switch Otimizado com AJAX -->
+                                            <div class="inline-flex relative items-center">
+                                                <label class="inline-flex relative items-center cursor-pointer toggle-switch" 
+                                                       data-course-id="{{ $course->id }}" 
+                                                       data-url="{{ route('admin.courses.toggle-active', $course) }}">
                                                     <input type="checkbox"
                                                         {{ $course->is_active ? 'checked' : '' }}
-                                                        onclick="event.preventDefault(); showToggleCourseModal(this.form);"
-                                                        class="sr-only peer"
+                                                        class="sr-only peer toggle-input"
                                                         aria-label="Ativar/Desativar curso">
-                                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-500 dark:bg-gray-700 rounded-full peer peer-checked:bg-green-500 transition-all duration-300"></div>
-                                                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full shadow-md transition-all duration-300 peer-checked:translate-x-5"></div>
+                                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-500 dark:bg-gray-700 rounded-full peer {{ $course->is_active ? 'bg-green-500' : '' }} transition-all duration-300"></div>
+                                                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full shadow-md transition-all duration-300 {{ $course->is_active ? 'translate-x-5' : '' }}"></div>
                                                 </label>
-                                            </form>
+                                                <!-- Status text -->
+                                                <span class="ml-2 text-xs font-medium status-text {{ $course->is_active ? 'text-green-600' : 'text-gray-500' }}">
+                                                    {{ $course->is_active ? 'Ativo' : 'Inativo' }}
+                                                </span>
+                                            </div>
                                             <form action="{{ route('admin.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja excluir este curso? Esta ação não pode ser desfeita.')">
                                                 @csrf
                                                 @method('DELETE')
@@ -312,36 +313,3 @@
     </div>
 </x-layouts.admin>
 
-@push('scripts')
-<script>
-    function showToggleCourseModal(form) {
-        const modal = document.getElementById('toggleCourseModal');
-        modal.classList.remove('hidden');
-        modal.dataset.formId = form.id;
-        return false;
-    }
-    function hideToggleCourseModal() {
-        document.getElementById('toggleCourseModal').classList.add('hidden');
-    }
-    function confirmToggleCourse() {
-        const modal = document.getElementById('toggleCourseModal');
-        const formId = modal.dataset.formId;
-        if (formId) {
-            document.getElementById(formId).submit();
-        }
-        hideToggleCourseModal();
-    }
-</script>
-@endpush
-
-<!-- Modal de confirmação -->
-<div id="toggleCourseModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-        <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Confirmação</h2>
-        <p class="mb-6 text-gray-700 dark:text-gray-300">Tem certeza que deseja bloquear/desbloquear este curso?</p>
-        <div class="flex justify-center gap-4">
-            <button onclick="confirmToggleCourse()" class="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700">Sim</button>
-            <button onclick="hideToggleCourseModal()" class="px-6 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cancelar</button>
-        </div>
-    </div>
-</div>

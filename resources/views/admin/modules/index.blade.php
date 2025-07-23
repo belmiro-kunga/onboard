@@ -8,6 +8,17 @@
             </a>
         </div>
 
+        @if(session('success'))
+            <div class="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="mb-4 p-3 rounded bg-red-100 text-red-800 border border-red-300">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <!-- Filtros -->
         <form method="GET" class="mb-4 flex flex-wrap gap-4">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar título ou descrição"
@@ -73,6 +84,11 @@
                                 <a href="{{ route('admin.modules.edit', $module) }}" class="text-indigo-600 hover:underline">Editar</a>
                                 <a href="{{ route('admin.modules.show', $module) }}" class="text-blue-600 hover:underline ml-2">Ver</a>
                                 <a href="{{ route('admin.modules.contents', $module) }}" class="text-green-600 hover:underline ml-2">Conteúdos</a>
+                                <form action="{{ route('admin.modules.destroy', $module) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Tem certeza que deseja excluir este módulo? Esta ação não pode ser desfeita.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">Excluir</button>
+                                </form>
                             </td>
                         </tr>
                     @empty

@@ -65,8 +65,7 @@ class Achievement extends Model
     {
         return $this->belongsToMany(User::class, 'user_achievements')
                     ->withPivot(['earned_at', 'points_awarded'])
-                    ->withTimestamps();
-    }
+                    ->withTimestamps(
 
     /**
      * Métodos de negócio
@@ -131,8 +130,7 @@ class Achievement extends Model
             return false;
         }
         
-        return $recentAttempts->every(fn($attempt) => $attempt->passed);
-    }
+        return $recentAttempts->every(fn($attempt) => $attempt->passed
 
     /**
      * Verificar conquista de pontuação perfeita
@@ -192,8 +190,7 @@ class Achievement extends Model
         return $user->progress()
                    ->where('status', 'completed')
                    ->where('time_spent', '<=', $maxTime)
-                   ->exists();
-    }
+                   ->exists(
 
     /**
      * Verificar conquista de busca por conhecimento
@@ -211,8 +208,7 @@ class Achievement extends Model
                                   ->pluck('category')
                                   ->toArray();
         
-        return count(array_intersect($categories, $completedCategories)) >= count($categories);
-    }
+        return count(array_intersect($categories, $completedCategories)) >= count($categories
 
     /**
      * Verificar conquista social
@@ -244,16 +240,14 @@ class Achievement extends Model
      */
     public function scopeByRarity(\Illuminate\Database\Eloquent\Builder $query, string $rarity): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('rarity', $rarity);
-    }
+        return $query->where('rarity', $rarity
 
     /**
      * Verifica se o usuário já conquistou este achievement.
      */
     public function isEarnedBy(User $user): bool
     {
-        return $this->users()->where('user_id', $user->id)->exists();
-    }
+        return $this->users()->where('user_id', $user->id)->exists(
 
     /**
      * Accessors
@@ -268,8 +262,7 @@ class Achievement extends Model
             return asset('storage/achievements/icons/' . $this->icon);
         }
         
-        return asset('images/achievement-default.png');
-    }
+        return asset('images/achievement-default.png'
 
     /**
      * Obter cor da raridade

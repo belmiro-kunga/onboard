@@ -106,9 +106,10 @@ abstract class AdminResourceController extends BaseAdminController
     /**
      * Bulk actions
      */
-    public function bulkAction(Request $request)
+    public function bulkAction(Request $request, string $model = null, array $allowedActions = ['activate', 'deactivate', 'delete'])
     {
-        return $this->bulkAction($request, $this->modelClass);
+        $modelClass = $model ?? $this->modelClass;
+        return parent::bulkAction($request, $modelClass, $allowedActions);
     }
 
     /**

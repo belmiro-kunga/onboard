@@ -62,7 +62,7 @@
                             </svg>
                             <span>Editar</span>
                         </a>
-                        <a href="{{ route('admin.courses.modules', $course) }}" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-2">
+                        <a href="{{ route('admin.courses.modules.index', $course) }}" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                             </svg>
@@ -201,7 +201,7 @@
                         <h3 class="text-xl font-bold text-white">Ações Rápidas</h3>
                     </div>
                     <div class="p-6 space-y-4">
-                        <a href="{{ route('admin.courses.modules', $course) }}" class="flex items-center p-4 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl transition-colors">
+                        <a href="{{ route('admin.courses.modules.index', $course) }}" class="flex items-center p-4 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl transition-colors">
                             <div class="bg-blue-500/20 p-3 rounded-xl mr-4">
                                 <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
@@ -281,7 +281,7 @@
             <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700/50 overflow-hidden">
                 <div class="p-6 border-b border-slate-700/50 flex items-center justify-between">
                     <h3 class="text-xl font-bold text-white">Módulos do Curso</h3>
-                    <a href="{{ route('admin.courses.modules', $course) }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2">
+                    <a href="{{ route('admin.courses.modules.index', $course) }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
@@ -395,7 +395,7 @@
                                             </svg>
                                             <p class="text-lg font-medium">Nenhum módulo encontrado</p>
                                             <p class="text-sm mt-1">Este curso ainda não possui módulos</p>
-                                            <a href="{{ route('admin.courses.modules', $course) }}" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-xl font-medium transition-all duration-300">
+                                            <a href="{{ route('admin.courses.modules.index', $course) }}" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-xl font-medium transition-all duration-300">
                                                 Adicionar Módulo
                                             </a>
                                         </div>

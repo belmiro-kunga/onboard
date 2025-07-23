@@ -339,4 +339,10 @@ export default {
       });
     },
   ],
+  safelist: [
+    'w-16',
+    'w-64',
+    'transition-all',
+    'duration-300'
+  ],
 }

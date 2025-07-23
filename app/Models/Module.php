@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\HasActiveStatus;
 use App\Models\Traits\Orderable;
-use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\FormattedTimestamps;
 use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -89,6 +89,14 @@ class Module extends Model
     public function contents(): HasMany
     {
         return $this->hasMany(ModuleContent::class);
+    }
+
+    /**
+     * Relacionamento: aulas do módulo.
+     */
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class)->orderBy('order_index');
     }
 
     /**

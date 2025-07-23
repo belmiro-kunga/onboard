@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CourseEnrollment extends Model
 {
-    use HasFactory, FormattedTimestamps;, HasCommonScopes
+    use HasFactory, FormattedTimestamps, HasCommonScopes;
 
     protected $fillable = [
         'user_id',

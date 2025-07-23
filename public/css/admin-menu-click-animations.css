@@ -1,0 +1,259 @@
+/* ===== ANIMAÇÕES DE CLIQUE PARA MENU ADMIN ===== */
+
+/* Animação de clique - efeito ripple */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Animação de pulso no clique */
+@keyframes clickPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animação de brilho */
+@keyframes shine {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Animação de bounce suave */
+@keyframes softBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Animação de glow pulsante */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 30px rgba(99, 102, 241, 0.4);
+    }
+}
+
+/* Classe base para itens do menu */
+.admin-menu-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Efeito ripple no clique */
+.admin-menu-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ativação do ripple */
+.admin-menu-item.ripple-active::before {
+    width: 300px;
+    height: 300px;
+    animation: ripple 0.6s ease-out;
+}
+
+/* Animação de clique - pulso */
+.admin-menu-item.click-pulse {
+    animation: clickPulse 0.2s ease-in-out;
+}
+
+/* Efeito de brilho no hover */
+.admin-menu-item:hover {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: shine 1.5s ease-in-out infinite;
+}
+
+/* Item ativo com glow pulsante */
+.admin-menu-item.active {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Animação do ícone no clique */
+.admin-menu-item .menu-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-menu-item.click-active .menu-icon {
+    animation: softBounce 0.4s ease-in-out;
+    color: #6366f1;
+}
+
+/* Animação do texto no clique */
+.admin-menu-item .menu-text {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-menu-item.click-active .menu-text {
+    transform: translateX(3px);
+    color: #6366f1;
+    font-weight: 600;
+}
+
+/* Efeito de loading após clique */
+@keyframes loadingDots {
+    0%, 20% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    80%, 100% {
+        opacity: 0;
+    }
+}
+
+.admin-menu-item.loading::after {
+    content: '...';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: loadingDots 1.5s infinite;
+    color: #6366f1;
+    font-weight: bold;
+}
+
+/* Animação de sucesso após navegação */
+@keyframes successCheck {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+    }
+}
+
+.admin-menu-item.success::after {
+    content: '✓';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: successCheck 0.6s ease-out;
+    color: #10b981;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Efeito de hover melhorado */
+.admin-menu-item:hover {
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito de focus para acessibilidade */
+.admin-menu-item:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+/* Animação de entrada para novos itens */
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.admin-menu-item.slide-in {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .admin-menu-item {
+        padding: 12px 16px;
+    }
+    
+    .admin-menu-item:hover {
+        transform: none;
+    }
+}
+
+/* Tema escuro */
+@media (prefers-color-scheme: dark) {
+    .admin-menu-item::before {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .admin-menu-item:hover {
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.05),
+            transparent
+        );
+    }
+}
+
+/* Animação personalizada para diferentes tipos de menu */
+.admin-menu-item[data-menu="dashboard"] {
+    --accent-color: #3b82f6;
+}
+
+.admin-menu-item[data-menu="users"] {
+    --accent-color: #10b981;
+}
+
+.admin-menu-item[data-menu="modules"] {
+    --accent-color: #f59e0b;
+}
+
+.admin-menu-item[data-menu="settings"] {
+    --accent-color: #8b5cf6;
+}
+
+/* Aplicar cor de destaque personalizada */
+.admin-menu-item.click-active {
+    border-left: 4px solid var(--accent-color, #6366f1);
+}

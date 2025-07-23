@@ -24,38 +24,6 @@ class CertificateController extends BaseAdminController
         
         return $this->adminView('certificates.index', compact('items', 'stats'));
     }
-        
-        if ($request->has('module_id')) {
-            $query->where('module_id', $request->module_id);
-        }
-        
-        if ($request->has('reference_type')) {
-            $query->where('reference_type', $request->reference_type);
-        }
-        
-        // Busca por nome de usuário
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-        
-        // Ordenação
-        $orderBy = $request->get('order_by', 'created_at');
-        $orderDirection = $request->get('order_direction', 'desc');
-        $query->orderBy($orderBy, $orderDirection);
-        
-        // Paginação
-        $certificates = $query->paginate(15);
-        
-        // Dados para filtros
-        $users = User::select('id', 'name')->orderBy('name')->get();
-        $modules = Module::select('id', 'title')->orderBy('title')->get();
-        
-        return view('admin.certificates.index', compact('certificates', 'users', 'modules'));
-    }
 
     /**
      * Exibe o formulário para criar um novo certificado.

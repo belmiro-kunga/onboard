@@ -80,6 +80,18 @@ Route::middleware(['auth', 'active.user'])->group(function () {
     Route::get('/modules', [App\Http\Controllers\ModuleController::class, 'index'])->name('modules.index');
     Route::get('/modules/{module}', [App\Http\Controllers\ModuleController::class, 'show'])->name('modules.show');
     Route::get('/modules/{module}/video/{videoIndex}', [App\Http\Controllers\ModuleController::class, 'showVideo'])->name('modules.show.video');
+
+    // Sistema de Aulas Avançado
+    Route::prefix('lessons')->name('lessons.')->group(function () {
+        Route::get('/{lesson}', [App\Http\Controllers\LessonController::class, 'show'])->name('show');
+        Route::post('/{lesson}/complete', [App\Http\Controllers\LessonController::class, 'markCompleted'])->name('complete');
+        Route::post('/{lesson}/progress', [App\Http\Controllers\LessonController::class, 'updateProgress'])->name('progress.update');
+        Route::post('/{lesson}/comments', [App\Http\Controllers\LessonController::class, 'addComment'])->name('comments.store');
+        Route::post('/{lesson}/notes', [App\Http\Controllers\LessonController::class, 'addNote'])->name('notes.store');
+        Route::get('/{lesson}/materials/{material}/download', [App\Http\Controllers\LessonController::class, 'downloadMaterial'])->name('materials.download');
+        Route::get('/{lesson}/stats', [App\Http\Controllers\LessonController::class, 'stats'])->name('stats');
+        Route::get('/{lesson}/next-recommended', [App\Http\Controllers\LessonController::class, 'getNextRecommended'])->name('next-recommended');
+    });
     
     // Tracking de progresso
     Route::post('/modules/{module}/content/{content}/viewed', [App\Http\Controllers\ModuleController::class, 'markContentAsViewed'])
@@ -232,12 +244,6 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             Route::post('/{course}/toggle-active', [App\Http\Controllers\Admin\CourseController::class, 'toggleActive'])->name('toggle-active');
             Route::post('/reorder', [App\Http\Controllers\Admin\CourseController::class, 'reorder'])->name('reorder');
             
-            // Módulos do curso
-            Route::get('/{course}/modules', [App\Http\Controllers\Admin\CourseController::class, 'modules'])->name('modules');
-            Route::post('/{course}/modules', [App\Http\Controllers\Admin\CourseController::class, 'addModule'])->name('modules.add');
-            Route::delete('/{course}/modules/{module}', [App\Http\Controllers\Admin\CourseController::class, 'removeModule'])->name('modules.remove');
-            Route::post('/{course}/modules/reorder', [App\Http\Controllers\Admin\CourseController::class, 'reorderModules'])->name('modules.reorder');
-            
             // Inscrições
             Route::get('/{course}/enrollments', [App\Http\Controllers\Admin\CourseController::class, 'enrollments'])->name('enrollments');
             Route::post('/{course}/enrollments', [App\Http\Controllers\Admin\CourseController::class, 'enrollUsers'])->name('enrollments.store');
@@ -245,6 +251,21 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             
             // Relatórios
             Route::get('/{course}/reports', [App\Http\Controllers\Admin\CourseController::class, 'reports'])->name('reports');
+            
+            // Gerenciamento de Módulos do Curso
+            Route::prefix('/{course}/modules')->name('modules.')->group(function () {
+                Route::get('/', [App\Http\Controllers\Admin\CourseModuleController::class, 'index'])->name('index');
+                Route::get('/create', [App\Http\Controllers\Admin\CourseModuleController::class, 'create'])->name('create');
+                Route::post('/', [App\Http\Controllers\Admin\CourseModuleController::class, 'store'])->name('store');
+                Route::get('/{module}', [App\Http\Controllers\Admin\CourseModuleController::class, 'show'])->name('show');
+                Route::get('/{module}/edit', [App\Http\Controllers\Admin\CourseModuleController::class, 'edit'])->name('edit');
+                Route::put('/{module}', [App\Http\Controllers\Admin\CourseModuleController::class, 'update'])->name('update');
+                Route::delete('/{module}', [App\Http\Controllers\Admin\CourseModuleController::class, 'destroy'])->name('destroy');
+                Route::post('/reorder', [App\Http\Controllers\Admin\CourseModuleController::class, 'reorder'])->name('reorder');
+                Route::post('/{module}/duplicate', [App\Http\Controllers\Admin\CourseModuleController::class, 'duplicate'])->name('duplicate');
+                Route::post('/{module}/toggle-active', [App\Http\Controllers\Admin\CourseModuleController::class, 'toggleActive'])->name('toggle-active');
+                Route::get('/{module}/progress-report', [App\Http\Controllers\Admin\CourseModuleController::class, 'progressReport'])->name('progress-report');
+            });
         });
 
         // Gerenciamento de Módulos
@@ -310,6 +331,20 @@ Route::middleware(['auth', 'active.user'])->group(function () {
             Route::post('/{question}/toggle-active', [App\Http\Controllers\Admin\QuizQuestionController::class, 'toggleActive'])->name('toggle-active');
             Route::get('/{question}/preview', [App\Http\Controllers\Admin\QuizQuestionController::class, 'preview'])->name('preview');
             Route::post('/import', [App\Http\Controllers\Admin\QuizQuestionController::class, 'import'])->name('import');
+        });
+
+        // Gerenciamento de Aulas Avançado
+        Route::prefix('lessons')->name('lessons.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\LessonController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\Admin\LessonController::class, 'create'])->name('create');
+            Route::post('/', [App\Http\Controllers\Admin\LessonController::class, 'store'])->name('store');
+            Route::get('/{lesson}', [App\Http\Controllers\Admin\LessonController::class, 'show'])->name('show');
+            Route::get('/{lesson}/edit', [App\Http\Controllers\Admin\LessonController::class, 'edit'])->name('edit');
+            Route::put('/{lesson}', [App\Http\Controllers\Admin\LessonController::class, 'update'])->name('update');
+            Route::delete('/{lesson}', [App\Http\Controllers\Admin\LessonController::class, 'destroy'])->name('destroy');
+            Route::post('/reorder', [App\Http\Controllers\Admin\LessonController::class, 'reorder'])->name('reorder');
+            Route::post('/{lesson}/duplicate', [App\Http\Controllers\Admin\LessonController::class, 'duplicate'])->name('duplicate');
+            Route::get('/{lesson}/engagement-report', [App\Http\Controllers\Admin\LessonController::class, 'engagementReport'])->name('engagement-report');
         });
     });
     

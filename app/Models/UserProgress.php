@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class UserProgress extends Model
 {
-    use HasFactory, FormattedTimestamps;, HasCommonScopes
+    use HasFactory, FormattedTimestamps, HasCommonScopes;
 
     /**
      * The attributes that are mass assignable.
@@ -97,7 +97,6 @@ class UserProgress extends Model
             'completed_at' => now(),
             'last_accessed_at' => now(),
         ]);
-
         // Disparar evento de módulo completado
         event(new \App\Events\ModuleCompleted($this->user, $this->module));
     }

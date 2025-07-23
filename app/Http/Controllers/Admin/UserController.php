@@ -19,7 +19,20 @@ class UserController extends BaseAdminController
         $stats = $this->generateStats(User::class);
         
         return $this->adminView('users.index', compact('items', 'stats'));
-    }%")
+    }
+
+    /**
+     * Get filtered users query
+     */
+    protected function getFilteredQuery($request)
+    {
+        $query = User::query();
+        
+        // Add search filter if search parameter exists
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
                   ->orWhere('department', 'like', "%{$search}%");
             });
@@ -171,16 +184,16 @@ class UserController extends BaseAdminController
     /**
      * Executa ações em massa nos usuários selecionados.
      */
-    public function bulkAction(Request $request)
+    public function bulkActionUsers(Request $request)
     {
-        $request->validate([
+        // Validar dados de entrada
+        $validated = $request->validate([
             'action' => 'required|in:activate,deactivate,delete',
             'users' => 'required|json'
         ]);
 
         try {
-            $userIds = json_decode($request->users, true);
-            $action = $request->action;
+            $userIds = json_decode($validated['users'], true);
             $currentUserId = auth()->id();
             
             // Remover o usuário atual da lista para evitar auto-modificação
@@ -190,37 +203,16 @@ class UserController extends BaseAdminController
                 return $this->backWithError('Nenhum usuário válido selecionado.');
             }
             
-            $users = User::whereIn('id', $userIds)->get();
-            $count = 0;
+            // Preparar request para o método pai
+            $bulkRequest = new Request([
+                'action' => $validated['action'],
+                'ids' => $userIds
+            ]);
             
-            foreach ($users as $user) {
-                switch ($action) {
-                    case 'activate':
-                        $user->update(['is_active' => true]);
-                        $count++;
-                        break;
-                    case 'deactivate':
-                        $user->update(['is_active' => false]);
-                        $count++;
-                        break;
-                    case 'delete':
-                        $user->delete();
-                        $count++;
-                        break;
-                }
-            }
+            return parent::bulkAction($bulkRequest, User::class, ['activate', 'deactivate', 'delete']);
             
-            $actionText = [
-                'activate' => 'ativados',
-                'deactivate' => 'desativados',
-                'delete' => 'excluídos'
-            ];
-            
-            return redirect()->route('admin.users.index')
-                ->with('success', "{$count} usuário(s) {$actionText[$action]} com sucesso!");
-                
         } catch (\Exception $e) {
-            return $this->backWithError('Erro ao executar ação em massa.');
+            return $this->backWithError('Erro na ação em lote: ' . $e->getMessage());
         }
     }
 }

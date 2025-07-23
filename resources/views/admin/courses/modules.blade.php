@@ -176,9 +176,10 @@
 
                         // Enviar a nova ordem para o servidor
                         console.log('Enviando reordenação:', modules);
-                        console.log('URL da rota:', '{{ route("admin.courses.modules.reorder", $course) }}');
+                        const reorderUrl = '{{ route("admin.courses.modules.reorder", $course) }}';
+                        console.log('URL da rota:', reorderUrl);
                         
-                        fetch('{{ route("admin.courses.modules.reorder", $course) }}', {
+                        fetch(reorderUrl, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -194,15 +195,18 @@
                         .then(data => {
                             console.log('Response data:', data);
                             if (!data.success) {
-                                console.error('Erro ao reordenar módulos');
-                                // Recarregar a página para restaurar a ordem correta
-                                window.location.reload();
+                                console.error('Erro ao reordenar módulos:', data.error || 'Erro desconhecido');
+                            // Mostrar mensagem de erro para o usuário
+                            alert('Erro ao reordenar os módulos. Recarregando a página...');
+                            // Recarregar a página para restaurar a ordem correta
+                            window.location.reload();
                             } else {
                                 console.log('Módulos reordenados com sucesso!');
                             }
                         })
                         .catch(error => {
-                            console.error('Erro:', error);
+                            console.error('Erro na requisição:', error);
+                            alert('Erro na comunicação com o servidor. Verifique o console para mais detalhes.');
                             window.location.reload();
                         });
                     }

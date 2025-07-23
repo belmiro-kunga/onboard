@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\HasActiveStatus;
 use App\Models\Traits\Orderable;
-use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\FormattedTimestamps;
 use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -256,8 +256,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(PointsHistory::class);
     }
-    
-    
+
     /**
      * Relacionamento com conquistas
      */
@@ -280,9 +279,7 @@ class User extends Authenticatable
         $gamificationService = app(\App\Services\GamificationService::class);
         return $gamificationService->addPoints($this, $points, $reason);
     }
-    
 
-    
     /**
      * Verificar conquistas do usuário
      */
@@ -350,7 +347,7 @@ class User extends Authenticatable
         
         return substr($initials, 0, 2);
     }
-    
+
     /**
      * Obter notificações não lidas
      */
@@ -358,7 +355,7 @@ class User extends Authenticatable
     {
         return $this->notifications()->whereNull('read_at');
     }
-    
+
     /**
      * Obter contagem de notificações não lidas
      */
@@ -366,7 +363,7 @@ class User extends Authenticatable
     {
         return $this->unreadNotifications()->count();
     }
-    
+
     /**
      * Enviar uma notificação para o usuário
      */

@@ -18,35 +18,16 @@ class ModuleController extends BaseAdminController
     /**
      * Exibe a lista de módulos.
      */
-        public function index(Request $request)
+    public function index(Request $request)
     {
         $items = $this->baseIndex(Module::class, $request, ['title', 'description']);
         $stats = $this->generateStats(Module::class);
-        
-        return $this->adminView('modules.index', compact('items', 'stats'));
-    }
-        
-        if ($request->has('difficulty')) {
-            $query->where('difficulty_level', $request->difficulty);
-        }
-        
-        if ($request->has('status')) {
-            $query->where('is_active', $request->status === 'active');
-        }
-        
-        // Ordenação
-        $orderBy = $request->get('order_by', 'order_index');
-        $orderDirection = $request->get('order_direction', 'asc');
-        $query->orderBy($orderBy, $orderDirection);
-        
-        // Paginação
-        $modules = $query->paginate(10);
-        
-        // Categorias e níveis de dificuldade para filtros
-        $categories = Module::select('category')->distinct()->pluck('category');
-        $difficultyLevels = Module::select('difficulty_level')->distinct()->pluck('difficulty_level');
-        
-        return view('admin.modules.index', compact('modules', 'categories', 'difficultyLevels'));
+        // Adicionar categorias e níveis de dificuldade
+        $categories = Module::query()->distinct()->pluck('category')->filter()->unique()->values();
+        $difficultyLevels = ['beginner', 'intermediate', 'advanced'];
+        // Ajustar para passar $modules para a view
+        $modules = $items;
+        return $this->adminView('modules.index', compact('modules', 'stats', 'categories', 'difficultyLevels'));
     }
 
     /**
@@ -128,7 +109,7 @@ class ModuleController extends BaseAdminController
     public function show(Module $module): View
     {
         // Carregar relacionamentos
-        $module->load(['contents', 'quizzes', 'prerequisites']);
+        $module->load(['contents', 'quizzes', 'lessons.video', 'course']);
         
         // Estatísticas
         $completionRate = $module->getCompletionRate();
@@ -152,19 +133,16 @@ class ModuleController extends BaseAdminController
      */
     public function edit(Module $module): View
     {
-        // Carregar pré-requisitos
-        $module->load('prerequisites');
+        // Carregar relacionamentos necessários
+        $module->load(['course', 'lessons']);
         
-        // Obter todos os módulos para seleção de pré-requisitos (exceto o atual)
+        // Obter todos os módulos para referência (se necessário no futuro)
         $allModules = Module::where('id', '!=', $module->id)
             ->select('id', 'title')
             ->orderBy('title')
             ->get();
         
-        // Obter IDs dos pré-requisitos atuais
-        $currentPrerequisites = $module->prerequisites->pluck('id')->toArray();
-        
-        return view('admin.modules.edit', compact('module', 'allModules', 'currentPrerequisites'));
+        return view('admin.modules.edit', compact('module', 'allModules'));
     }
 
     /**
@@ -182,15 +160,7 @@ class ModuleController extends BaseAdminController
             'estimated_duration' => 'required|integer|min:1',
             'difficulty_level' => 'required|string|in:beginner,intermediate,advanced',
             'thumbnail' => 'nullable|image|max:2048',
-            'prerequisites' => 'nullable|array',
-            'prerequisites.*' => [
-                'exists:modules,id',
-                function ($attribute, $value, $fail) use ($module) {
-                    if ($value == $module->id) {
-                        $fail('Um módulo não pode ser pré-requisito de si mesmo.');
-                    }
-                },
-            ],
+            'prerequisites' => 'nullable|string|max:1000', // Mudado para string
         ]);
         
         if ($validator->fails()) {
@@ -224,16 +194,12 @@ class ModuleController extends BaseAdminController
             'content_type' => $request->content_type ?? $module->content_type,
             'content_data' => $request->content_data ?? $module->content_data,
             'difficulty_level' => $request->difficulty_level,
-            'prerequisites' => $request->prerequisites ?? [],
+            'prerequisites' => $request->prerequisites ?? '',
             'requirements' => $request->requirements ?? $module->requirements ?? [],
         ]);
         
-        // Atualizar pré-requisitos
-        if ($request->has('prerequisites')) {
-            $module->prerequisites()->sync($request->prerequisites);
-        } else {
-            $module->prerequisites()->detach();
-        }
+        // Não processar pré-requisitos como relacionamento, pois agora é um campo de texto
+        // O campo prerequisites agora é armazenado como string no campo prerequisites do módulo
         
         return redirect()->route('admin.modules.show', $module)
             ->with('success', 'Módulo atualizado com sucesso!');
@@ -263,9 +229,13 @@ class ModuleController extends BaseAdminController
         // Remover quizzes do módulo
         $module->quizzes()->delete();
         
-        // Remover relações de pré-requisitos
-        $module->prerequisites()->detach();
-        $module->dependentModules()->detach();
+        // Remover relações de pré-requisitos (se existirem)
+        if (method_exists($module, 'prerequisites')) {
+            $module->prerequisites()->detach();
+        }
+        if (method_exists($module, 'dependentModules')) {
+            $module->dependentModules()->detach();
+        }
         
         // Excluir o módulo
         $module->delete();

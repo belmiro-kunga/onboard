@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Traits\HasActiveStatus;
 use App\Models\Traits\Orderable;
-use App\Models\Traits\FormattedTimestamps;, Cacheable
+use App\Models\Traits\FormattedTimestamps;
 use App\Models\Traits\Cacheable;
 
 class Course extends Model
 {
-    use HasFactory, HasActiveStatus, Orderable, FormattedTimestamps;, Cacheable
+    use HasFactory, HasActiveStatus, Orderable, FormattedTimestamps, Cacheable;
 
     protected $fillable = [
         'title',

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\HasActiveStatus;
 use App\Models\Traits\FormattedTimestamps;
-use App\Models\Traits\HasCommonScopes;, Cacheable
+use App\Models\Traits\HasCommonScopes;
 use App\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,7 +29,7 @@ use App\Models\QuizAttempt; // Added this import for QuizAttempt model
  */
 class Quiz extends Model
 {
-    use HasFactory, HasActiveStatus, FormattedTimestamps;, HasCommonScopes, Cacheable
+    use HasFactory, HasActiveStatus, FormattedTimestamps, HasCommonScopes, Cacheable;
 
     /**
      * Os atributos que são atribuíveis em massa.

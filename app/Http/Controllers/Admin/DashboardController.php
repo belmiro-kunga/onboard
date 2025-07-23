@@ -17,6 +17,13 @@ use Carbon\Carbon;
 
 class DashboardController extends BaseAdminController
 {
+    private ModuleRepository $moduleRepository;
+
+    public function __construct(ModuleRepository $moduleRepository)
+    {
+        $this->moduleRepository = $moduleRepository;
+    }
+
     /**
      * Exibe o dashboard administrativo.
      */

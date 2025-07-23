@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class QuizQuestion extends Model
 {
-    use HasFactory, SoftDeletes;, HasCommonScopes
+    use HasFactory, SoftDeletes, HasCommonScopes;
 
     /**
      * The attributes that are mass assignable.
@@ -73,24 +73,21 @@ class QuizQuestion extends Model
      */
     public function quiz(): BelongsTo
     {
-        return $this->belongsTo(Quiz::class);
-    }
+        return $this->belongsTo(Quiz::class
 
     /**
      * Relacionamento: respostas das tentativas para esta questão.
      */
     public function attemptAnswers(): HasMany
     {
-        return $this->hasMany(QuizAttemptAnswer::class);
-    }
+        return $this->hasMany(QuizAttemptAnswer::class
 
     /**
      * Relacionamento com respostas da questão
      */
     public function answers(): HasMany
     {
-        return $this->hasMany(QuizAnswer::class);
-    }
+        return $this->hasMany(QuizAnswer::class
 
     /**
      * Métodos de negócio

@@ -47,16 +47,14 @@ class QuizAnswer extends Model
      */
     public function question(): BelongsTo
     {
-        return $this->belongsTo(QuizQuestion::class, 'quiz_question_id');
-    }
+        return $this->belongsTo(QuizQuestion::class, 'quiz_question_id'
 
     /**
      * Relacionamento com questão (alias)
      */
     public function quizQuestion(): BelongsTo
     {
-        return $this->belongsTo(QuizQuestion::class, 'quiz_question_id');
-    }
+        return $this->belongsTo(QuizQuestion::class, 'quiz_question_id'
 
     /**
      * Scopes
@@ -73,16 +71,14 @@ class QuizAnswer extends Model
      */
     public function scopeCorrect(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('is_correct', true);
-    }
+        return $query->where('is_correct', true
 
     /**
      * Scope para respostas incorretas
      */
     public function scopeIncorrect(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where('is_correct', false);
-    }
+        return $query->where('is_correct', false
 
     /**
      * Scope ordenado por índice
